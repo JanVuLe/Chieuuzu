@@ -25,7 +25,7 @@
             <div class="row border-bottom">
                 @include('admin.layouts.header')
             </div>
-            @include('admin.layouts.breadcrumb')
+            <x-breadcrumb />
             <div class="container">
                 @yield('content');
             </div>
