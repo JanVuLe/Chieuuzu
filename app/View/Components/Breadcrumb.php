@@ -52,6 +52,20 @@ class Breadcrumb extends Component
             //Products
             if(request()->routeIs('admin.products.index')){
                 $breadcrumbs[] = ['name' => 'Sản phẩm', 'url' => null];
+            }elseif(request()->routeIs('admin.products.create')){
+                $breadcrumbs[] = ['name' => 'Sản phẩm', 'url' => route('admin.products.index')];
+                $breadcrumbs[] = ['name' => 'Thêm sản phẩm', 'url' => null];
+            }
+            //Discounts
+            if(request()->routeIs('admin.discounts.index')){
+                $breadcrumbs[] = ['name' => 'Khuyến mãi', 'url' => null];
+            }elseif(request()->routeIs('admin.discounts.create')){
+                $breadcrumbs[] = ['name' => 'Khuyến mãi', 'url' => route('admin.discounts.index')];
+                $breadcrumbs[] = ['name' => 'Thêm khuyến mãi', 'url' => null];
+            }
+            elseif(request()->routeIs('admin.discounts.edit')){
+                $breadcrumbs[] = ['name' => 'Khuyến mãi', 'url' => route('admin.discounts.index')];
+                $breadcrumbs[] = ['name' => 'Chỉnh sửa khuyến mãi', 'url' => null];
             }
         }
 

@@ -11,7 +11,7 @@
                     <h5>Chỉnh sửa danh mục</h5>
                 </div>
                 <div class="ibox-content">
-                    <form action="{{ route('admin.categories.update', $category->id) }}" method="POST">
+                    <form action="{{ route('admin.categories.update', $category->slug) }}" method="POST">
                         @csrf
                         @method('PUT')
 

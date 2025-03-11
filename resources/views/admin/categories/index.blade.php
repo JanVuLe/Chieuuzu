@@ -43,9 +43,9 @@
                                         <td>{{ $category->slug }}</td>
                                         <td>{{ $category->parent ? $category->parent->name : 'Không có' }}</td>
                                         <td class="text-center">
-                                            <a href="{{ route('admin.categories.edit', $category->id) }}"
+                                            <a href="{{ route('admin.categories.edit', $category->slug) }}"
                                                 class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Sửa</a>
-                                            <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST"
+                                            <form action="{{ route('admin.categories.destroy', $category->slug) }}" method="POST"
                                                 class="delete-form" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')

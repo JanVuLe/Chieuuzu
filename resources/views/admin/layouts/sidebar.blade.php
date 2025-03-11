@@ -21,11 +21,23 @@
                     IN+
                 </div>
             </li>
-            <li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><a href="{{ route('admin.dashboard') }}"><i class="fa fa-th-large"></i><span>Bảng điều khiển</span></a></li>
-            <li class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}"><a href="{{ route('admin.users.index') }}"><i class="fa fa-users "></i><span>Người dùng</span></a></li>
-            <li class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><a href="{{ route('admin.categories.index') }}"><i class="fa fa-bookmark"></i><span>Danh mục sản phẩm</span></a></li>
-            <li class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}"><a href="{{ route('admin.products.index') }}"><i class="fa fa-shopping-cart"></i><span>Sản phẩm</span></a></li>
-
+            <li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><a href="{{ route('admin.dashboard') }}"><i class="fa fa-th-large"></i><span class="nav-label">Bảng điều khiển</span></a></li>
+            <li class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}"><a href="{{ route('admin.users.index') }}"><i class="fa fa-users "></i><span class="nav-label">Người dùng</span></a></li>
+            <li class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><a href="{{ route('admin.categories.index') }}"><i class="fa fa-bookmark"></i><span class="nav-label">Danh mục sản phẩm</span></a></li>
+            <li class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.products.index') }}"><i class="fa fa-shopping-cart"></i><span class="nav-label">Sản phẩm</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li class="{{ request()->routeIs('admin.products.index') ? 'active' : '' }}"><a href="{{ route('admin.products.index') }}">Danh sách sản phẩm</a></li>
+                    <li class="{{ request()->routeIs('admin.products.create') ? 'active' : '' }}"><a href="{{ route('admin.products.create') }}">Thêm sản phẩm</a></li>
+                </ul>
+            </li>
+            <li class="{{ request()->routeIs('admin.discounts.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.discounts.index') }}"><i class="fa fa-money"></i><span class="nav-label">Khuyến mãi</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li class="{{ request()->routeIs('admin.discounts.*') ? 'active' : '' }}"><a href="{{ route('admin.discounts.index') }}">Khuyến mãi</a></li>
+                    <li class=""><a href="#">Mã khuyến mãi</a></li>
+                </ul>
+            </li>
         </ul>
     </div>
 </nav>

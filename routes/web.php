@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Auth\LoginController;
@@ -32,14 +33,22 @@ Route::prefix('admin')->group(function () {
         ]);
         Route::post('/users/toggle-status/{id}', [UserController::class, 'toggleStatus'])->name('admin.users.toggle-status');
         //Categories
-        Route::resource('/categories', CategoryController::class)->names([
+        Route::resource('/categories', CategoryController::class)->parameters(['categories' => 'slug'])->names([
             'index'   => 'admin.categories.index',
             'create'  => 'admin.categories.create',
             'store'   => 'admin.categories.store',
-            'show'    => 'admin.categories.show',
             'edit'    => 'admin.categories.edit',
             'update'  => 'admin.categories.update',
             'destroy' => 'admin.categories.destroy'
+        ]);
+        //Discounts
+        Route::resource('/discounts', DiscountController::class)->parameters(['discounts' => 'slug'])->names([
+            'index'   => 'admin.discounts.index',
+            'create'  => 'admin.discounts.create',
+            'store'   => 'admin.discounts.store',
+            'edit'    => 'admin.discounts.edit',
+            'update'  => 'admin.discounts.update',
+            'destroy' => 'admin.discounts.destroy'
         ]);
         //Products
         Route::resource('/products', ProductController::class)->names([
