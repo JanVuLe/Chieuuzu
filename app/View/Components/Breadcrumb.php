@@ -55,6 +55,9 @@ class Breadcrumb extends Component
             }elseif(request()->routeIs('admin.products.create')){
                 $breadcrumbs[] = ['name' => 'Sản phẩm', 'url' => route('admin.products.index')];
                 $breadcrumbs[] = ['name' => 'Thêm sản phẩm', 'url' => null];
+            }elseif(request()->routeIs('admin.products.show')){
+                $breadcrumbs[] = ['name' => 'Sản phẩm', 'url' => route('admin.products.index')];
+                $breadcrumbs[] = ['name' => 'Xem chi tiết', 'url' => null];
             }
             //Discounts
             if(request()->routeIs('admin.discounts.index')){

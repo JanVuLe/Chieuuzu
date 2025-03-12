@@ -43,45 +43,31 @@
                         <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
                             <thead>
                                 <tr>
-                                    <th data-toggle="true">Product Name</th>
-                                    <th data-hide="phone">Model</th>
-                                    <th data-hide="all">Description</th>
-                                    <th data-hide="phone">Price</th>
-                                    <th data-hide="phone,tablet">Quantity</th>
-                                    <th data-hide="phone">Status</th>
-                                    <th class="text-right" data-sort-ignore="true">Action</th>
+                                    <th data-toggle="true">Tên sản phẩm</th>
+                                    <th data-hide="phone">Danh mục</th>
+                                    <th data-hide="all">Mô tả</th>
+                                    <th data-hide="phone">Giá</th>
+                                    <th data-hide="phone,tablet">Số lượng</th>
+                                    <th class="text-right" data-sort-ignore="true">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        Example product 1
-                                    </td>
-                                    <td>
-                                        Model 1
-                                    </td>
-                                    <td>
-                                        It is a long established fact that a reader will be distracted by the readable
-                                        content of a page when looking at its layout. The point of using Lorem Ipsum is
-                                        that it has a more-or-less normal distribution of letters, as opposed to using
-                                        'Content here, content here', making it look like readable English.
-                                    </td>
-                                    <td>
-                                        $50.00
-                                    </td>
-                                    <td>
-                                        1000
-                                    </td>
-                                    <td>
-                                        <span class="label label-primary">Enable</span>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="btn-group">
-                                            <button class="btn-white btn btn-xs">View</button>
-                                            <button class="btn-white btn btn-xs">Edit</button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @foreach ($products as $product)
+                                    <tr>
+                                        <td>{{ $product->name }}</td>
+                                        <td>{{ $product->category->name ?? 'Không có' }}</td>
+                                        <td>{{ $product->description }}</td>
+                                        <td>{{ number_format($product->price, 0, ',', '.') }} VND</td>
+                                        <td>{{ $product->stock }}</td>
+                                        <td class="text-right">
+                                            <div class="btn-group">
+                                                <a href="{{ route('admin.products.show', $product->slug) }}" class="btn btn-white btn-xs">View</a>
+                                                <a href="{{ route('admin.products.edit', $product->slug) }}" class="btn btn-white btn-xs">Edit</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
                             <tfoot>
                             </tfoot>
                         </table>

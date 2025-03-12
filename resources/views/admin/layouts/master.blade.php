@@ -26,9 +26,7 @@
                 @include('admin.layouts.header')
             </div>
             <x-breadcrumb />
-            <div class="container">
                 @yield('content');
-            </div>
             @include('admin.layouts.footer')
         </div>
     </div>
