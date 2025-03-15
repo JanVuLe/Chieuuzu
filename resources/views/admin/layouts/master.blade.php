@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="{{ asset('admin_assets/font-awesome/css/font-awesome.css') }}">
     <link rel="stylesheet" href="{{ asset('admin_assets/css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('admin_assets/css/style.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('admin_assets/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css') }}">
+    
     @stack('styles')
     
 </head>

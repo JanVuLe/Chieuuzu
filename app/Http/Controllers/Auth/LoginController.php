@@ -9,13 +9,15 @@ use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view('admin.auth.login', [
             'title' => 'Đăng nhập'
         ]);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6'
@@ -26,10 +28,10 @@ class LoginController extends Controller
             'password.min' => 'mật khẩu phải có ít nhất 8 ký tự'
         ]);
 
-        if(Auth::attempt([
+        if (Auth::attempt([
             'email' => $request->input('email'),
             'password' => $request->input('password')
-        ])){
+        ])) {
             return redirect()->route('admin');
         }
 
@@ -38,7 +40,8 @@ class LoginController extends Controller
         return redirect()->back();
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

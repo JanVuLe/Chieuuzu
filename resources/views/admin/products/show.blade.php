@@ -42,6 +42,32 @@
                                     {{ $product->category->name ?? 'Không có' }}
                                 </div>
                                 <hr>
+                                <h4>Kho hàng</h4>
+                                @if($product->warehouses->isNotEmpty())
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Tên kho</th>
+                                                <th>Địa chỉ</th>
+                                                <th>Số lượng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($product->warehouses as $warehouse)
+                                                <tr>
+                                                    <td>{{ $warehouse->id }}</td>
+                                                    <td>{{ $warehouse->name }}</td>
+                                                    <td>{{ $warehouse->location }}</td>
+                                                    <td>{{ $warehouse->pivot->quantity }}</td> 
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                @else
+                                    <p class="text-muted">Sản phẩm chưa có trong kho nào.</p>
+                                @endif
+                                <hr>
                                 <h4>Mô tả</h4>
                                 <div class="text-muted">
                                     {{ $product->description }}

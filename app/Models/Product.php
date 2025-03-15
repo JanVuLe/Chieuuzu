@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class Product extends Model
 {
-    protected $fillable = ['name', 'slug', 'description', 'price', 'stock', 'category_id', 'discount_id'];
+    protected $fillable = ['name', 'slug', 'description', 'price', 'category_id', 'discount_id'];
 
     public function images()
     {
@@ -19,9 +19,15 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function discount()
+    public function discounts()
     {
-        return $this->belongsTo(Discount::class);
+        return $this->belongsToMany(Discount::class, 'discount_product');
+    }
+
+    public function warehouses()
+    {
+        return $this->belongsToMany(Warehouse::class, 'warehouse_products')
+            ->withPivot('quantity');
     }
 
     public static function boot()

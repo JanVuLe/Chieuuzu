@@ -52,7 +52,7 @@ class DiscountController extends Controller
 
 
 
-    
+
     public function edit($slug)
     {
         $discount = Discount::where('slug', $slug)->firstOrFail();

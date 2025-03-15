@@ -36,13 +36,13 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255|unique:categories,name',
             'parent_id' => 'nullable|exists:categories,id'
         ]);
-    
+
         Category::create([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'parent_id' => $request->parent_id ?? null
         ]);
-    
+
         return redirect()->route('admin.categories.index')->with('success', 'Danh mục đã được tạo thành công!');
     }
 
@@ -89,7 +89,7 @@ class CategoryController extends Controller
         }
     }
 
-    
+
     /**
      * Remove the specified resource from storage.
      */
@@ -112,5 +112,4 @@ class CategoryController extends Controller
             return redirect()->route('admin.categories.index')->with('error', 'Đã xảy ra lỗi khi xóa danh mục!');
         }
     }
-
 }

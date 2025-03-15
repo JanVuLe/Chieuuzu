@@ -27,10 +27,6 @@
                                 <input type="number" name="price" class="form-control" step="0.01" required>
                             </div>
                             <div class="form-group">
-                                <label for="stock">Số lượng:</label>
-                                <input type="number" name="stock" class="form-control" required>
-                            </div>
-                            <div class="form-group">
                                 <label for="category_id">Danh mục:</label>
                                 <select name="category_id" class="form-control">
                                     @foreach($categories as $category)

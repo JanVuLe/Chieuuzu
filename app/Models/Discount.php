@@ -9,7 +9,12 @@ class Discount extends Model
 {
 
     protected $fillable = [
-        'name', 'percentage', 'start_date', 'end_date', 'status', 'slug'
+        'name',
+        'percentage',
+        'start_date',
+        'end_date',
+        'status',
+        'slug'
     ];
 
     public static function boot()
@@ -35,5 +40,10 @@ class Discount extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'discount_product');
     }
 }

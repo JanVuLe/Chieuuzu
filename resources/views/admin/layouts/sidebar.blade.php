@@ -3,7 +3,7 @@
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element"> <span>
-                    <img alt="Avatar" class="img-circle" src="{{ Auth::user()->avatar ? asset('storage/avatars/' . Auth::user()->avatar) : asset('storage/avartars/default-avatar.jpg') }}" />
+                    <img alt="Avatar" class="img-circle" src="{{ Auth::user()->avatar ? asset('storage/avatars/' . Auth::user()->avatar) : asset('storage/avatars/default-avatar.png') }}" />
                     </span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{ Auth::user()->name }}</strong>
@@ -31,6 +31,7 @@
                     <li class="{{ request()->routeIs('admin.products.create') ? 'active' : '' }}"><a href="{{ route('admin.products.create') }}">Thêm sản phẩm</a></li>
                 </ul>
             </li>
+            <li class="{{ request()->routeIs('admin.warehouses.*') ? 'active' : '' }}"><a href="{{ route('admin.warehouses.index') }}"><i class="fa fa-home"></i><span class="nav-label">Kho hàng</span></a></li>
             <li class="{{ request()->routeIs('admin.discounts.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.discounts.index') }}"><i class="fa fa-money"></i><span class="nav-label">Khuyến mãi</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
@@ -38,6 +39,7 @@
                     <li class=""><a href="#">Mã khuyến mãi</a></li>
                 </ul>
             </li>
+            <li class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"><a href="{{ route('admin.orders.index') }}"><i class="bi bi-receipt"></i><span class="nav-label">Hóa đơn</span></a></li>
         </ul>
     </div>
 </nav>
