@@ -16,7 +16,7 @@
                 {{-- Danh mục sản phẩm --}}
                 <li class="dropdown">
                     <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-th-list"></i> Danh mục <span class="caret"></span>
+                        <i class="fa fa-th-list"></i> Sản phẩm <span class="caret"></span>
                     </a>
                     <ul role="menu" class="dropdown-menu">
                         @foreach ($categories as $category)
@@ -43,7 +43,7 @@
                 <!-- Giỏ hàng -->
                 <li>
                     <a href="{{ route('shop.cart') }}">
-                        <i class="fa fa-shopping-cart"></i> Giỏ hàng 
+                        <i class="fa fa-shopping-cart"></i>
                         <span class="badge bg-danger">{{ session('cart_count', 0) }}</span>
                     </a>
                 </li>

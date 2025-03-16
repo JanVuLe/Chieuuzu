@@ -109,3 +109,4 @@ Route::get('/search', [ShopController::class, 'search'])->name('shop.search');
 Route::get('/login', [ShopLoginController::class, 'showLoginForm'])->name('shop.login');
 Route::post('/logout', [ShopLoginController::class, 'logout'])->name('logout');
 Route::get('/profile', [UserController::class, 'profile'])->name('shop.profile')->middleware('auth');
+Route::get('/product/{id}', [ShopController::class, 'showProduct'])->name('shop.product');
