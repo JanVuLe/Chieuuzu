@@ -1,4 +1,4 @@
-<footer class="footer bg-light py-4">
+<footer class="footer bg-light py-4 fixed-bottom">
     <div class="container">
         <div class="row">
             <!-- Thông tin liên hệ -->

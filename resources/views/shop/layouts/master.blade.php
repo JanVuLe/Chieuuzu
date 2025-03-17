@@ -25,7 +25,6 @@
                 @include('shop.layouts.header')
             </div>
             @yield('content')
-            @include('shop.layouts.footer')
         </div>
         
     </div>

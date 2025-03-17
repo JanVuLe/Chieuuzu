@@ -22,9 +22,4 @@ class ShopController extends Controller
         return view('shop.home', compact('categories', 'banners'));
     }
 
-    public function showProduct($id)
-    {
-        $product = Product::findOrFail($id);
-        return view('shop.product-detail', compact('product'));
-    }
 }

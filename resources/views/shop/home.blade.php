@@ -71,7 +71,7 @@
                                     @endif
                                     <div class="product-desc">
                                         <span class="product-price">{{ number_format($product->price, 0, ',', '.') }} đ</span>
-                                        <a href="{{ route('shop.product', $product->id) }}" class="product-name">
+                                        <a href="{{ route('shop.product', $product->slug) }}" class="product-name">
                                             {{ $product->name }}
                                         </a>
                                         <div class="small m-t-xs">
