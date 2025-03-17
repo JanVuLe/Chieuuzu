@@ -24,9 +24,10 @@
             <div class="row border-bottom white-bg">
                 @include('shop.layouts.header')
             </div>
-            @yield('content');
+            @yield('content')
             @include('shop.layouts.footer')
         </div>
+        
     </div>
     <!-- Mainly scripts -->
     <script src="{{ asset('admin_assets/js/jquery-3.1.1.min.js') }} "></script>

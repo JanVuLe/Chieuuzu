@@ -5,25 +5,30 @@
 @include('shop.layouts.carousel')
 
 @foreach ($categories as $category)
-    {{-- Kiểm tra xem danh mục cha hoặc danh mục con có sản phẩm không --}}
     @php
         $hasProducts = $category->products->isNotEmpty() || $category->children->pluck('products')->flatten()->isNotEmpty();
     @endphp
 
-    {{-- Nếu danh mục cha hoặc danh mục con có sản phẩm, hiển thị danh mục --}}
     @if ($hasProducts)
+    <hr>
         <h3 class="category-title">{{ $category->name }}</h3>
-
-        {{-- Hiển thị sản phẩm của danh mục cha --}}
+    <hr>
         <div class="row">
             @if ($category->products->isNotEmpty())
                 @foreach ($category->products->take(4) as $product)
                     <div class="col-md-3">
                         <div class="ibox">
                             <div class="ibox-content product-box">
-                                <div class="product-imitation">
-                                    <img src="{{ asset('storage/' . $product->image) }}" class="img-responsive">
-                                </div>
+                                    @if($product->images->isNotEmpty())
+                                        <div>
+                                            <img src="{{ asset('storage/' . $product->images->first()->image_url) }}" 
+                                                class="image-imitation"
+                                                alt="{{ $product->name }}"
+                                                style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: cover; padding: 0%;">
+                                        </div>
+                                    @else
+                                        <p>Chưa có hình ảnh</p>
+                                    @endif
                                 <div class="product-desc">
                                     <span class="product-price">{{ number_format($product->price, 0, ',', '.') }} đ</span>
                                     <a href="{{ route('shop.product', $product->id) }}" class="product-name">
@@ -33,7 +38,7 @@
                                         {{ Str::limit($product->description, 50) }}
                                     </div>
                                     <div class="m-t text-right">
-                                        <a href="{{ route('shop.product', $product->id) }}" class="btn btn-xs btn-outline btn-primary">
+                                        <a href="{{ route('shop.product', $product->slug) }}" class="btn btn-xs btn-outline btn-primary">
                                             Xem chi tiết <i class="fa fa-long-arrow-right"></i>
                                         </a>
                                     </div>
@@ -54,9 +59,16 @@
                         <div class="col-md-3">
                             <div class="ibox">
                                 <div class="ibox-content product-box">
-                                    <div class="product-imitation">
-                                        <img src="{{ asset('storage/' . $product->image) }}" class="img-responsive">
-                                    </div>
+                                    @if($product->images->isNotEmpty())
+                                        <div>
+                                            <img src="{{ asset('storage/' . $product->images->first()->image_url) }}" 
+                                                class="image-imitation"
+                                                alt="{{ $product->name }}"
+                                                style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: cover; padding: 0%;">
+                                        </div>
+                                    @else
+                                        <p>Chưa có hình ảnh</p>
+                                    @endif
                                     <div class="product-desc">
                                         <span class="product-price">{{ number_format($product->price, 0, ',', '.') }} đ</span>
                                         <a href="{{ route('shop.product', $product->id) }}" class="product-name">
@@ -66,7 +78,7 @@
                                             {{ Str::limit($product->description, 50) }}
                                         </div>
                                         <div class="m-t text-right">
-                                            <a href="{{ route('shop.product', $product->id) }}" class="btn btn-xs btn-outline btn-primary">
+                                            <a href="{{ route('shop.product', $product->slug) }}" class="btn btn-xs btn-outline btn-primary">
                                                 Xem chi tiết <i class="fa fa-long-arrow-right"></i>
                                             </a>
                                         </div>
