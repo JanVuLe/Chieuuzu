@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 @push('styles')
-    <link href="{{ asset('admin_assets/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
     <style>
         .pwstrength_viewport_progress {
             padding-top: 15px;
@@ -117,9 +117,9 @@
         </div>
     </div>
     @push('scripts')
-        <script src="{{ asset('admin_assets/js/plugins/pwstrength/pwstrength-bootstrap.min.js') }}"></script>
-        <script src="{{ asset('admin_assets/js/plugins/pwstrength/zxcvbn.js') }}"></script>
-        <script src="{{ asset('admin_assets/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
+        <script src="{{ asset('assets/js/plugins/pwstrength/pwstrength-bootstrap.min.js') }}"></script>
+        <script src="{{ asset('assets/js/plugins/pwstrength/zxcvbn.js') }}"></script>
+        <script src="{{ asset('assets/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
         <script>
             $(document).ready(function () {
                 //password_meter

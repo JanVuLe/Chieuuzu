@@ -1,8 +1,8 @@
 @extends('admin.layouts.master')
 @section('title', 'Quản lý hóa đơn')
 @push('styles')
-<link href="{{ asset('admin_assets/css/plugins/footable/footable.core.css') }}" rel="stylesheet">
-<link href="{{ asset('admin_assets/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/css/plugins/footable/footable.core.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
 @endpush
 @section('content')
 <div class="wrapper wrapper-content animated fadeInRight ecommerce">
@@ -101,8 +101,8 @@
     </div>
 </div>
 @push('scripts')
-<script src="{{ asset('admin_assets/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
-<script src="{{ asset('admin_assets/js/plugins/footable/footable.all.min.js') }}"></script>
+<script src="{{ asset('assets/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
+<script src="{{ asset('assets/js/plugins/footable/footable.all.min.js') }}"></script>
 <script>
     $(document).ready(function() {
 

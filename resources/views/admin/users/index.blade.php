@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 @push('styles')
-    <link href="{{ asset('admin_assets/switchery-0.8.2/dist/switchery.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/switchery-0.8.2/dist/switchery.min.css') }}" rel="stylesheet">
 @endpush
 @section('title', 'Quản lý người dùng')
 @section('content')
@@ -103,7 +103,7 @@
         </div>
     </div>
     @push('scripts')
-        <script src="{{ asset('admin_assets/switchery-0.8.2/dist/switchery.min.js') }}"></script>
+        <script src="{{ asset('assets/switchery-0.8.2/dist/switchery.min.js') }}"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 let elems = document.querySelectorAll('.toggle-status');

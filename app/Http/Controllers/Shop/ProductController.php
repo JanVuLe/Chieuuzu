@@ -13,6 +13,7 @@ class ProductController extends Controller
     {
         $product = Product::where('slug', $slug)->with(['images', 'category'])->firstOrFail();
         $categories = Category::whereNull('parent_id')->with(['children', 'products'])->get();
-        return view('shop.product-detail', compact('product', 'categories'));
+        $relatedProducts = Product::where('category_id', $product->category_id)->where('id', '!=', $product->id)->with('images')->take(6)->get();
+        return view('shop.product-detail', compact('product', 'categories', 'relatedProducts'));
     }
 }

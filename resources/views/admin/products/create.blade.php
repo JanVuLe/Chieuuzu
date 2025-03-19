@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 @section('title', 'Thêm sản phẩm')
 @push('styles')
-    <link href="{{ asset('admin_assets/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
 @endpush
 @section('content')
     <div class="wrapper wrapper-content animated fadeInRight">

@@ -2,7 +2,7 @@
 @section('title', 'Quản lý sản phẩm')
 
 @push('styles')
-<link href="{{ asset('admin_assets/css/plugins/footable/footable.core.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/css/plugins/footable/footable.core.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
@@ -98,7 +98,7 @@
 </div>
 
 @push('scripts')
-<script src="{{ asset('admin_assets/js/plugins/footable/footable.all.min.js') }}"></script>
+<script src="{{ asset('assets/js/plugins/footable/footable.all.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @if(session('success'))
     <script>

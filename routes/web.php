@@ -101,13 +101,23 @@ Route::prefix('admin')->group(function () {
 });
 
 //SHOP
+//Login logout
+Route::get('/login', [ShopLoginController::class, 'showLoginForm'])->name('shop.login');
+Route::post('/logout', [ShopLoginController::class, 'logout'])->name('logout');
+//Home
 Route::get('/', [ShopController::class, 'index'])->name('shop.home');
 Route::get('/category/{id}', [ShopController::class, 'category'])->name('shop.category');
 Route::get('/contact', [ShopController::class, 'contact'])->name('shop.contact');
 Route::get('/about', [ShopController::class, 'about'])->name('shop.about');
-Route::get('/cart', [CartController::class, 'index'])->name('shop.cart');
 Route::get('/search', [ShopController::class, 'search'])->name('shop.search');
-Route::get('/login', [ShopLoginController::class, 'showLoginForm'])->name('shop.login');
-Route::post('/logout', [ShopLoginController::class, 'logout'])->name('logout');
+//Product detail
 Route::get('/profile', [UserController::class, 'profile'])->name('shop.profile')->middleware('auth');
 Route::get('/product/{slug}', [ShopProductController::class, 'show'])->name('shop.product');
+//Cart
+Route::get('/cart', [CartController::class, 'index'])->name('shop.cart');
+Route::post('/cart/add/{slug}', [CartController::class, 'add'])->name('shop.cart.add');
+Route::post('/cart/update', [CartController::class, 'update'])->name('shop.cart.update');
+Route::post('/cart/remove', [CartController::class, 'remove'])->name('shop.cart.remove');
+//Order
+Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('shop.cart.checkout');
+Route::get('/payment', [CartController::class, 'payment'])->name('shop.payment');

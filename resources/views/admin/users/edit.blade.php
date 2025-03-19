@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 @push('styles')
-    <link href="{{ asset('admin_assets/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
 @endpush
 @section('title', 'Chỉnh sửa người dùng')
 @section('content')
@@ -73,7 +73,7 @@
         </div>
     </div>
     @push('scripts')
-        <script src="{{ asset('admin_assets/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
+        <script src="{{ asset('assets/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
         <script>
             document.getElementById("avatarInput").addEventListener("change", function (event) {
                 const file = event.target.files[0];

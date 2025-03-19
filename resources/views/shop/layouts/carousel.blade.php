@@ -1,6 +1,6 @@
 @push('styles')
-<link href="{{ asset('admin_assets/css/plugins/slick/slick.css') }}" rel="stylesheet">
-<link href="{{ asset('admin_assets/css/plugins/slick/slick-theme.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/css/plugins/slick/slick.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/css/plugins/slick/slick-theme.css') }}" rel="stylesheet">
 @endpush
 <div class="wrapper wrapper-content">
     <div class="row">
@@ -21,7 +21,7 @@
     </div>
 </div>
 @push('scripts')
-<script src="{{ asset('admin_assets/js/plugins/slick/slick.min.js') }}"></script>
+<script src="{{ asset('assets/js/plugins/slick/slick.min.js') }}"></script>
 <script>
     $(document).ready(function () {
         $('.banner').slick({

@@ -8,11 +8,11 @@
 
     <title>{{ $title }}</title>
 
-    <link href="{{ asset('admin_assets/css/bootstrap.min.css') }} " rel="stylesheet">
-    <link href="{{ asset('admin_assets/font-awesome/css/font-awesome.css') }} " rel="stylesheet">
+    <link href="{{ asset('assets/css/bootstrap.min.css') }} " rel="stylesheet">
+    <link href="{{ asset('assets/font-awesome/css/font-awesome.css') }} " rel="stylesheet">
 
-    <link href="{{ asset('admin_assets/css/animate.css') }} " rel="stylesheet">
-    <link href="{{ asset('admin_assets/css/style.css') }} " rel="stylesheet">
+    <link href="{{ asset('assets/css/animate.css') }} " rel="stylesheet">
+    <link href="{{ asset('assets/css/style.css') }} " rel="stylesheet">
 
 </head>
 
@@ -45,8 +45,8 @@
     </div>
 
     <!-- Mainly scripts -->
-    <script src="{{ asset('admin_assets/js/jquery-3.1.1.min.js') }} "></script>
-    <script src="{{ asset('admin_assets/js/bootstrap.min.js') }} "></script>
+    <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }} "></script>
+    <script src="{{ asset('assets/js/bootstrap.min.js') }} "></script>
 
 </body>
 
