@@ -40,7 +40,7 @@
                                             <td>
                                                 {{ number_format($item['price'], 0, ',', '.') }} đ
                                             </td>
-                                            <td width="65">
+                                            <td width="100">
                                                 <input type="number" class="form-control update-quantity" data-id="{{ $id }}" value="{{ $item['quantity'] }}" min="1">
                                             </td>
                                             <td>

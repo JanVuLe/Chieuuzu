@@ -1,8 +1,8 @@
 @extends('shop.layouts.master')
 @section('title', 'Chi tiết sản phẩm')
 @push('styles')
-<link href="{{ asset('admin_assets/css/plugins/slick/slick.css') }}" rel="stylesheet">
-<link href="{{ asset('admin_assets/css/plugins/slick/slick-theme.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/css/plugins/slick/slick.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/css/plugins/slick/slick-theme.css') }}" rel="stylesheet">
 <style>
 .product-detail-header {
     height: 150px;
@@ -127,7 +127,7 @@
         @endforeach
     </div>
 @push('scripts')
-<script src="{{ asset('admin_assets/js/plugins/slick/slick.min.js') }}"></script>
+<script src="{{ asset('assets/js/plugins/slick/slick.min.js') }}"></script>
 <script>
     $(document).ready(function(){
         $('.product-images').slick({

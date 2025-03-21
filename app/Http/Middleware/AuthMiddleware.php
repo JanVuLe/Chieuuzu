@@ -19,9 +19,12 @@ class AuthMiddleware
         if (!Auth::check()) {
             return redirect()->route('admin.login')->with('error', 'Bạn cần đăng nhập trước.');
         }
-        if (Auth::check() && Auth::user()->role === 'admin') {
+        if (Auth::user()->role === 'admin' && Auth::user()->is_active) {
             return $next($request);
         }
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect()->route('admin.login')->with('error', 'Bạn không có quyền truy cập!');
     }
 }

@@ -8,20 +8,21 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\WarehouseController;
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Auth\ShopLoginController;
+use App\Http\Controllers\Auth\ShopRegisterController;
 use App\Http\Controllers\Shop\CartController;
 use App\Http\Controllers\Shop\ProductController as ShopProductController;
 use App\Http\Controllers\Shop\ShopController;
-use App\Models\WarehouseProduct;
+use App\Http\Controllers\Shop\LocationController;
 use Illuminate\Support\Facades\Route;
 
 
 //ADMIN
 Route::prefix('admin')->group(function () {
-    Route::get('/login', [LoginController::class, 'index'])->name('admin.login');
-    Route::post('/login/store', [LoginController::class, 'store'])->name('admin.login.store');
-    Route::post('/logout', [LoginController::class, 'logout'])->name('admin.logout');
+    Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
+    Route::post('/login/store', [AdminLoginController::class, 'store'])->name('admin.login.store');
+    Route::post('/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
     Route::middleware(['auth'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('admin');
@@ -103,7 +104,10 @@ Route::prefix('admin')->group(function () {
 //SHOP
 //Login logout
 Route::get('/login', [ShopLoginController::class, 'showLoginForm'])->name('shop.login');
+Route::post('/login/store', [ShopLoginController::class, 'store'])->name('shop.login.store');
 Route::post('/logout', [ShopLoginController::class, 'logout'])->name('logout');
+Route::get('/register', [ShopRegisterController::class, 'showRegisterForm'])->name('shop.register');
+Route::post('/register', [ShopRegisterController::class, 'register'])->name('shop.register.store');
 //Home
 Route::get('/', [ShopController::class, 'index'])->name('shop.home');
 Route::get('/category/{id}', [ShopController::class, 'category'])->name('shop.category');
@@ -121,3 +125,9 @@ Route::post('/cart/remove', [CartController::class, 'remove'])->name('shop.cart.
 //Order
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('shop.cart.checkout');
 Route::get('/payment', [CartController::class, 'payment'])->name('shop.payment');
+//Notification
+
+//API
+Route::get('/api/provinces', [LocationController::class, 'getProvinces']);
+Route::get('/api/districts', [LocationController::class, 'getDistricts']);
+Route::get('/api/wards', [LocationController::class, 'getWards']);

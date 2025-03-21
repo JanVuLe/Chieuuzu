@@ -1,38 +1,41 @@
-<footer class="footer bg-light py-4 fixed-bottom">
+<!-- Footer -->
+<footer class="footer">
     <div class="container">
         <div class="row">
             <!-- Thông tin liên hệ -->
             <div class="col-md-4">
+                <img src="{{ asset('path/to/logo.png') }}" alt="Shop Logo" class="footer-logo">
                 <h5>Thông tin liên hệ</h5>
-                <p><i class="fa fa-map-marker"></i> Địa chỉ: Số 123, Đường ABC, TP.HCM</p>
-                <p><i class="fa fa-phone"></i> Hotline: <a href="tel:0123456789">0123 456 789</a></p>
-                <p><i class="fa fa-envelope"></i> Email: <a href="mailto:info@tanphuhung.vn">info@tanphuhung.vn</a></p>
-            </div>
-
-            <!-- Giới thiệu -->
-            <div class="col-md-4">
-                <h5>Về chúng tôi</h5>
                 <ul class="list-unstyled">
-                    <li><a href="#">Giới thiệu</a></li>
-                    <li><a href="#">Chính sách bảo mật</a></li>
-                    <li><a href="#">Điều khoản sử dụng</a></li>
-                    <li><a href="#">Hỗ trợ khách hàng</a></li>
+                    <li><i class="fa fa-map-marker"></i> 123 Đường Láng, Đống Đa, Hà Nội</li>
+                    <li><i class="fa fa-phone"></i> 0914 377 808</li>
+                    <li><i class="fa fa-envelope"></i> support@shop.com</li>
                 </ul>
             </div>
-
-            <!-- Mạng xã hội -->
+            <!-- Liên kết nhanh -->
             <div class="col-md-4">
-                <h5>Kết nối với chúng tôi</h5>
-                <a href="#" class="text-dark mx-2"><i class="fa fa-facebook fa-lg"></i></a>
-                <a href="#" class="text-dark mx-2"><i class="fa fa-twitter fa-lg"></i></a>
-                <a href="#" class="text-dark mx-2"><i class="fa fa-instagram fa-lg"></i></a>
-                <a href="#" class="text-dark mx-2"><i class="fa fa-youtube fa-lg"></i></a>
+                <h5>Liên kết nhanh</h5>
+                <ul class="list-unstyled">
+                    <li>Trang chủ</li>
+                    <li>Giỏ hàng</li>
+                    <li>Thanh toán</li>
+                </ul>
+            </div>
+            <!-- Theo dõi chúng tôi -->
+            <div class="col-md-4">
+                <h5>Theo dõi chúng tôi</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fa fa-instagram"></i> Instagram</a></li>
+                </ul>
             </div>
         </div>
-
-        <!-- Bản quyền -->
-        <div class="text-center mt-3">
-            <strong>Tân Phú Hưng &copy; 2025</strong> - Chiếu Uzu & Cói - Hàng thủ công mỹ nghệ
+        <hr>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <p>© {{ date('Y') }} Shop. All Rights Reserved.</p>
+            </div>
         </div>
     </div>
 </footer>

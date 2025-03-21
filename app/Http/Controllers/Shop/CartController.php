@@ -7,8 +7,10 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Collection;
 
 class CartController extends Controller
 {
@@ -131,7 +133,8 @@ class CartController extends Controller
      */
     public function payment()
     {
-        if (!Auth::check()) {
+        $user = Auth::user();
+        if (!$user) {
             return redirect()->route('shop.login')->with('error', 'Vui lòng đăng nhập để thanh toán.');
         }
 
@@ -154,26 +157,49 @@ class CartController extends Controller
      */
     public function checkout(Request $request)
     {
-        if (!Auth::check()) {
+        $user = Auth::user();
+        if (!$user) {
             return redirect()->route('shop.login')->with('error', 'Vui lòng đăng nhập để thanh toán.');
         }
 
         $cart = session()->get('cart', []);
-
         if (empty($cart)) {
             return redirect()->route('shop.cart')->with('error', 'Giỏ hàng của bạn trống.');
         }
+
+        $request->validate([
+            'province' => 'required',
+            'district' => 'required',
+            'ward' => 'required',
+            'street' => 'required',
+            'payment_method' => 'required|in:cash_on_delivery,bank_transfer',
+        ]);
 
         $total = array_sum(array_map(function ($item) {
             return $item['price'] * $item['quantity'];
         }, $cart));
 
+        // Tạo chuỗi shipping_address từ các trường riêng biệt
+        $shippingAddress = implode(', ', array_filter([
+            $request->input('street'),
+            $request->input('ward'),
+            $request->input('district'),
+            $request->input('province'),
+        ]));
+
+        // Lưu đơn hàng
         $order = Order::create([
-            'user_id' => Auth::id(),
+            'user_id' => $user->id,
             'total_price' => $total,
+            'province' => $request->input('province'),
+            'district' => $request->input('district'),
+            'ward' => $request->input('ward'),
+            'street' => $request->input('street'),
+            'shipping_address' => $shippingAddress,
             'status' => 'processing',
         ]);
 
+        // Tạo chi tiết đơn hàng
         foreach ($cart as $productId => $item) {
             OrderDetail::create([
                 'order_id' => $order->id,
@@ -182,6 +208,15 @@ class CartController extends Controller
                 'price' => $item['price'],
             ]);
         }
+
+        // Tạo bản ghi thanh toán
+        Payment::create([
+            'order_id' => $order->id,
+            'method' => $request->payment_method,
+            'amount' => $total,
+            'status' => 'pending',
+            'note' => $request->payment_method === 'bank_transfer' ? 'Chờ xác nhận chuyển khoản' : null,
+        ]);
 
         session()->forget('cart');
         session()->put('cart_count', 0);

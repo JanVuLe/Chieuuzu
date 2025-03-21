@@ -1,5 +1,8 @@
 @extends('shop.layouts.master')
 @section('title', 'Thanh toán')
+@push('styles')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@endpush
 @section('content')
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
@@ -9,7 +12,6 @@
                     <h5>Thanh toán đơn hàng</h5>
                 </div>
                 <div class="ibox-content">
-                    <!-- Tabs -->
                     <ul class="nav nav-tabs">
                         <li class="active"><a data-toggle="tab" href="#tab-info">1. Thông tin</a></li>
                         <li><a data-toggle="tab" href="#tab-payment">2. Thanh toán</a></li>
@@ -45,22 +47,40 @@
                                 </div>
                                 <div class="col-md-6">
                                     <h3>Thông tin người nhận</h3>
-                                    <form>
+                                    <form id="shipping-form">
                                         <div class="form-group">
                                             <label>Họ và tên</label>
-                                            <input type="text" class="form-control" value="{{ Auth::user()->name }}" readonly>
+                                            <input type="text" class="form-control" value="{{ auth()->user()->name ?? 'Chưa có tên' }}" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label>Email</label>
-                                            <input type="email" class="form-control" value="{{ Auth::user()->email }}" readonly>
+                                            <input type="email" class="form-control" value="{{ auth()->user()->email }}" readonly>
                                         </div>
                                         <div class="form-group">
-                                            <label>Địa chỉ</label>
-                                            <input type="text" class="form-control" placeholder="Nhập địa chỉ giao hàng">
+                                            <label>Tỉnh/Thành phố</label>
+                                            <select name="province" id="province" class="form-control searchable-select">
+                                                <option value="">Chọn tỉnh/thành phố</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Quận/Huyện</label>
+                                            <select name="district" id="district" class="form-control searchable-select" disabled>
+                                                <option value="">Chọn quận/huyện</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Phường/Xã</label>
+                                            <select name="ward" id="ward" class="form-control searchable-select" disabled>
+                                                <option value="">Chọn phường/xã</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Địa chỉ chi tiết</label>
+                                            <input type="text" name="street" id="street" class="form-control" placeholder="Số nhà, tên đường" value="{{ auth()->user()->address ?? '' }}">
                                         </div>
                                         <div class="form-group">
                                             <label>Số điện thoại</label>
-                                            <input type="text" class="form-control" placeholder="Nhập số điện thoại">
+                                            <input type="text" class="form-control" value="{{ auth()->user()->phone ?? 'Chưa có số điện thoại' }}" readonly>
                                         </div>
                                     </form>
                                 </div>
@@ -77,14 +97,18 @@
                                     <h3>Phương thức thanh toán</h3>
                                     <form action="{{ route('shop.cart.checkout') }}" method="POST" id="payment-form">
                                         @csrf
+                                        <input type="hidden" name="province" id="province_input">
+                                        <input type="hidden" name="district" id="district_input">
+                                        <input type="hidden" name="ward" id="ward_input">
+                                        <input type="hidden" name="street" id="street_input">
                                         <div class="form-group">
                                             <label>
-                                                <input type="radio" name="payment_method" value="cod" checked> Thanh toán khi nhận hàng (COD)
+                                                <input type="radio" name="payment_method" value="cash_on_delivery" checked> Thanh toán khi nhận hàng (COD)
                                             </label>
                                         </div>
                                         <div class="form-group">
                                             <label>
-                                                <input type="radio" name="payment_method" value="bank"> Chuyển khoản ngân hàng
+                                                <input type="radio" name="payment_method" value="bank_transfer"> Chuyển khoản ngân hàng
                                             </label>
                                             <p class="text-muted small m-t-xs">Vui lòng chuyển khoản đến: Ngân hàng ABC - STK: 123456789 - Chủ TK: Tân Phú Hưng</p>
                                         </div>
@@ -103,24 +127,80 @@
     </div>
 </div>
 
-@if(session('success'))
-    <script>
-        alert("{{ session('success') }}");
-    </script>
-@endif
-@if(session('error'))
-    <script>
-        alert("{{ session('error') }}");
-    </script>
-@endif
-
 @push('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {
+        // Khởi tạo Select2 cho các dropdown
+        $('.searchable-select').select2({
+            placeholder: $(this).find('option:first').text(),
+            allowClear: true,
+            width: '100%',
+        });
+        $('.searchable-select').select2({
+            placeholder: 'Tìm kiếm...',
+            allowClear: true,
+            width: '100%',
+        });
+        // Lấy danh sách tỉnh/thành phố khi trang tải
+        fetch('/api/provinces')
+            .then(response => response.json())
+            .then(data => {
+                const provinceSelect = $('#province');
+                data.forEach(province => {
+                    provinceSelect.append(`<option value="${province.name}">${province.name}</option>`);
+                });
+            });
+
+        // Khi chọn tỉnh, lấy quận/huyện
+        $('#province').on('change', function() {
+            const provinceName = $(this).val();
+            const districtSelect = $('#district');
+            districtSelect.prop('disabled', true).html('<option value="">Chọn quận/huyện</option>');
+            $('#ward').prop('disabled', true).html('<option value="">Chọn phường/xã</option>');
+
+            if (provinceName) {
+                fetch(`/api/districts?province_code=${provinceName}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        districtSelect.prop('disabled', false);
+                        data.forEach(district => {
+                            districtSelect.append(`<option value="${district.name}">${district.name}</option>`);
+                        });
+                    });
+            }
+        });
+
+        // Khi chọn quận/huyện, lấy phường/xã
+        $('#district').on('change', function() {
+            const districtName = $(this).val();
+            const wardSelect = $('#ward');
+            wardSelect.prop('disabled', true).html('<option value="">Chọn phường/xã</option>');
+
+            if (districtName) {
+                fetch(`/api/wards?district_code=${districtName}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        wardSelect.prop('disabled', false);
+                        data.forEach(ward => {
+                            wardSelect.append(`<option value="${ward.name}">${ward.name}</option>`);
+                        });
+                    });
+            }
+        });
+
+        // Khi submit form, gán giá trị vào các input hidden
         $('#payment-form').on('submit', function(e) {
             if (!confirm('Bạn có chắc chắn muốn xác nhận thanh toán?')) {
                 e.preventDefault();
+                return;
             }
+
+            $('#province_input').val($('#province').val());
+            $('#district_input').val($('#district').val());
+            $('#ward_input').val($('#ward').val());
+            $('#street_input').val($('#street').val());
         });
     });
 </script>

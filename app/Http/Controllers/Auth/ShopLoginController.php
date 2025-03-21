@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -11,7 +12,11 @@ class ShopLoginController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.shop_login');
+        if (Auth::check()) {
+            return redirect()->route('shop.home');
+        }
+        $categories = Category::whereNull('parent_id')->with(['children', 'products'])->get();
+        return view('shop.auth.login', compact('categories'));
     }
 
     public function store(Request $request)
@@ -30,12 +35,12 @@ class ShopLoginController extends Controller
             'email' => $request->input('email'),
             'password' => $request->input('password')
         ])) {
-            return redirect()->route('admin');
+            return redirect()->route('shop.home')->with('success', 'Đăng nhập thành công!');
         }
 
         Session::flash('error', 'Email hoặc mật khẩu không đúng');
 
-        return redirect()->back();
+        return redirect()->back()->withInput();
     }
 
     public function logout(Request $request)
@@ -44,6 +49,6 @@ class ShopLoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('admin.login')->with('success', 'Đã đăng xuất thành công');
+        return redirect()->route('shop.home')->with('success', 'Đã đăng xuất thành công');
     }
 }

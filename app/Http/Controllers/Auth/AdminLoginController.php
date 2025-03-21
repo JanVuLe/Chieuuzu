@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-class LoginController extends Controller
+class AdminLoginController extends Controller
 {
     public function index()
     {
@@ -30,13 +30,20 @@ class LoginController extends Controller
 
         if (Auth::attempt([
             'email' => $request->input('email'),
-            'password' => $request->input('password')
+            'password' => $request->input('password'),
         ])) {
-            return redirect()->route('admin');
+            $user = Auth::user();
+
+            if ($user->role === 'admin' && $user->is_active) {
+                return redirect()->route('admin');
+            }
+
+            Auth::logout();
+            Session::flash('error', 'Chỉ tài khoản admin đã kích hoạt mới có thể đăng nhập!');
+            return redirect()->back();
         }
 
         Session::flash('error', 'Email hoặc mật khẩu không đúng');
-
         return redirect()->back();
     }
 
