@@ -1,24 +1,24 @@
 <!-- Footer -->
-<footer class="footer">
+<footer class="white-bg">
     <div class="container">
         <div class="row">
             <!-- Thông tin liên hệ -->
             <div class="col-md-4">
-                <img src="{{ asset('path/to/logo.png') }}" alt="Shop Logo" class="footer-logo">
+                <h4>Chiếu Uzu</h4>
                 <h5>Thông tin liên hệ</h5>
                 <ul class="list-unstyled">
-                    <li><i class="fa fa-map-marker"></i> 123 Đường Láng, Đống Đa, Hà Nội</li>
-                    <li><i class="fa fa-phone"></i> 0914 377 808</li>
-                    <li><i class="fa fa-envelope"></i> support@shop.com</li>
+                    <li><i class="fa fa-map-marker"></i> An Hưng, TT An Phú, An Phú, An Giang</li>
+                    <li><i class="fa fa-phone"></i> 0914 377808</li>
+                    <li><i class="fa fa-envelope"></i> tanchaulongap@gmail.com</li>
                 </ul>
             </div>
-            <!-- Liên kết nhanh -->
+            <!-- Về công ty -->
             <div class="col-md-4">
-                <h5>Liên kết nhanh</h5>
+                <h5>Về công ty</h5>
                 <ul class="list-unstyled">
-                    <li>Trang chủ</li>
-                    <li>Giỏ hàng</li>
-                    <li>Thanh toán</li>
+                    <li>Giới thiệu công ty</li>
+                    <li>Tuyển dụng</li>
+                    <li>Gửi góp ý, khiếu nại</li>
                 </ul>
             </div>
             <!-- Theo dõi chúng tôi -->
@@ -34,7 +34,7 @@
         <hr>
         <div class="row">
             <div class="col-md-12 text-center">
-                <p>© {{ date('Y') }} Shop. All Rights Reserved.</p>
+                <p>© {{ date('Y') }} Shop. Tân Phú Hưng. Chiếu Uzu & Cối. Hàng thủ công mỹ nghệ.</p>
             </div>
         </div>
     </div>

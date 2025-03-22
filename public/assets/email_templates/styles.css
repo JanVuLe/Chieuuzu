@@ -52,6 +52,7 @@ body {
     margin: 0 auto;
     display: block;
     padding: 20px;
+    flex: 1;
 }
 
 /* -------------------------------------

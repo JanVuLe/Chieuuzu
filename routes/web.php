@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Auth\ShopLoginController;
 use App\Http\Controllers\Auth\ShopRegisterController;
 use App\Http\Controllers\Shop\CartController;
+use App\Http\Controllers\Shop\ContactController;
 use App\Http\Controllers\Shop\ProductController as ShopProductController;
 use App\Http\Controllers\Shop\ShopController;
 use App\Http\Controllers\Shop\LocationController;
@@ -114,8 +115,9 @@ Route::get('/category/{id}', [ShopController::class, 'category'])->name('shop.ca
 Route::get('/contact', [ShopController::class, 'contact'])->name('shop.contact');
 Route::get('/about', [ShopController::class, 'about'])->name('shop.about');
 Route::get('/search', [ShopController::class, 'search'])->name('shop.search');
-//Product detail
+//Profile
 Route::get('/profile', [UserController::class, 'profile'])->name('shop.profile')->middleware('auth');
+//Product detail
 Route::get('/product/{slug}', [ShopProductController::class, 'show'])->name('shop.product');
 //Cart
 Route::get('/cart', [CartController::class, 'index'])->name('shop.cart');
@@ -125,8 +127,10 @@ Route::post('/cart/remove', [CartController::class, 'remove'])->name('shop.cart.
 //Order
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('shop.cart.checkout');
 Route::get('/payment', [CartController::class, 'payment'])->name('shop.payment');
+//Contact
+Route::get('/contact', [ContactController::class, 'index'])->name('shop.contact');
+Route::post('/contact', [ContactController::class, 'submit'])->name('shop.contact.submit');
 //Notification
-
 //API
 Route::get('/api/provinces', [LocationController::class, 'getProvinces']);
 Route::get('/api/districts', [LocationController::class, 'getDistricts']);

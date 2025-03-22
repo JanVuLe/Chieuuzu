@@ -1,3 +1,37 @@
+@push('styles')
+<style>
+    .breadcrumb-wrapper {
+        background-color: #f8f8f8;
+        padding: 5px 0;
+        border-bottom: 1px solid #e7eaec;
+    }
+    .breadcrumb {
+        background-color: transparent;
+        margin-bottom: 0;
+        padding: 5px 15px;
+        font-size: 14px;
+    }
+    .breadcrumb li {
+        display: inline-block;
+    }
+    .breadcrumb li a {
+        color: #676a6c;
+        text-decoration: none;
+    }
+    .breadcrumb li a:hover {
+        color: #1ab394;
+        text-decoration: underline;
+    }
+    .breadcrumb li.active {
+        color: #1ab394;
+    }
+    .breadcrumb li + li:before {
+        content: ">";
+        padding: 0 5px;
+        color: #676a6c;
+    }
+</style>
+@endpush
 <header>
     <div class="bg-primary text-white py-1">
         <marquee behavior="scroll" direction="left">
@@ -9,7 +43,11 @@
             <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
                 <i class="fa fa-reorder"></i>
             </button>
-            <a href="{{ route('shop.home') }}" class="navbar-brand">ChieuUzu</a>
+            <div class="navbar-brand">
+                <a href="{{ route('shop.home') }}">
+                    <img src="{{ asset('storage/logo/logo.png') }}" alt="ChieuUzu Logo" style="height: 50px; padding-left: 15px">
+                </a>
+            </div>
         </div>
         <div class="navbar-collapse collapse" id="navbar">
             <ul class="nav navbar-nav">
@@ -24,7 +62,10 @@
                         @endforeach
                     </ul>
                 </li>
-
+                <!-- Liên hệ -->
+                <li>
+                    <a href="{{ route('shop.contact') }}">Liên hệ</a>
+                </li>
                 <!-- Tìm kiếm -->
                 <li>
                     <form class="navbar-form" action="{{ route('shop.search') }}" method="GET">
@@ -86,6 +127,24 @@
             </ul>
         </div>
     </nav>
+    <!-- Breadcrumb -->
+    @if (request()->route()->getName() !== 'shop.home')
+        <div class="breadcrumb-wrapper">
+            <div class="container">
+                <ol class="breadcrumb">
+                    @if (isset($breadcrumbs) && !empty($breadcrumbs))
+                        @foreach ($breadcrumbs as $breadcrumb)
+                            @if ($loop->last)
+                                <li class="active">{{ $breadcrumb['title'] }}</li>
+                            @else
+                                <li><a href="{{ $breadcrumb['url'] }}"><i class="fa fa-home"></i> {{ $breadcrumb['title'] }}</a></li>
+                            @endif
+                        @endforeach
+                    @endif
+                </ol>
+            </div>
+        </div>
+    @endif
     <!-- Modal Đăng nhập/Đăng ký -->
     <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-labelledby="authModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

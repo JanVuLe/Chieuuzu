@@ -20,14 +20,15 @@
 </head>
 <body class="top-navigation">
     <div id="wrapper">
-        <div id="page-wrapper" class="gray-bg">
+        <header>
             <div class="row border-bottom white-bg">
                 @include('shop.layouts.header')
             </div>
+        </header>
+        <div class="gray-bg content">
             @yield('content')
-            
         </div>
-        
+        @include('shop.layouts.footer')
     </div>
     <!-- Mainly scripts -->
     <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }} "></script>

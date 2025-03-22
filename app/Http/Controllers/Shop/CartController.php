@@ -39,9 +39,14 @@ class CartController extends Controller
                 ->get();
         }
 
+        $breadcrumbs = [
+            ['title' => 'Trang chủ', 'url' => route('shop.home')],
+            ['title' => 'Giỏ hàng', 'url' => route('shop.cart')],
+        ];
+
         $categories = Category::whereNull('parent_id')->with(['children', 'products'])->get();
 
-        return view('shop.cart', compact('cart', 'total', 'relatedProducts', 'categories'));
+        return view('shop.cart', compact('cart', 'total', 'relatedProducts', 'categories', 'breadcrumbs'));
     }
 
     /**
