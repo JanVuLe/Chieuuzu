@@ -5565,6 +5565,16 @@ table.shoping-cart-table tr td:last-child {
   top: -32px;
   right: 0;
 }
+.product-price-discounted {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #ff4d4d;
+  padding: 6px 12px;
+  position: absolute;
+  top: -32px;
+  left: 0;
+}
 .product-detail .ibox-content {
   padding: 30px 30px 50px 30px;
 }

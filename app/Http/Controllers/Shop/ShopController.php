@@ -18,7 +18,11 @@ class ShopController extends Controller
             return asset('storage/banner/' . $file->getFilename()); // Đường dẫn chính xác
         });
 
-        $categories = Category::whereNull('parent_id')->with(['children', 'products'])->get();
+        $categories = Category::whereNull('parent_id')
+            ->with([
+                'children.products.discounts',
+                'products.discounts'
+            ])->get();
         return view('shop.home', compact('categories', 'banners'));
     }
 }

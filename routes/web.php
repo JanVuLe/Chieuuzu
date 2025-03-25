@@ -131,6 +131,12 @@ Route::get('/api/provinces', [LocationController::class, 'getProvinces'])->name(
 Route::get('/api/districts', [LocationController::class, 'getDistricts'])->name('api.districts');
 Route::get('/api/wards', [LocationController::class, 'getWards'])->name('api.wards');
 
+// Cart
+Route::get('/cart', [CartController::class, 'index'])->name('shop.cart');
+Route::post('/cart/add/{slug}', [CartController::class, 'add'])->name('shop.cart.add');
+Route::post('/cart/update', [CartController::class, 'update'])->name('shop.cart.update');
+Route::post('/cart/remove', [CartController::class, 'remove'])->name('shop.cart.remove');
+
 // Routes yêu cầu đăng nhập
 Route::middleware(['auth', 'role:user'])->group(function () {
     // Profile
@@ -138,10 +144,6 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('shop.profile.update');
     Route::get('/notifications', [NotificationController::class, 'index'])->name('shop.notifications');
     // Cart
-    Route::get('/cart', [CartController::class, 'index'])->name('shop.cart');
-    Route::post('/cart/add/{slug}', [CartController::class, 'add'])->name('shop.cart.add');
-    Route::post('/cart/update', [CartController::class, 'update'])->name('shop.cart.update');
-    Route::post('/cart/remove', [CartController::class, 'remove'])->name('shop.cart.remove');
     Route::get('/payment', [CartController::class, 'payment'])->name('shop.payment');
     Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('shop.cart.checkout');
     // Order

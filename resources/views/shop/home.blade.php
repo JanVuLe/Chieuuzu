@@ -30,7 +30,28 @@
                                             <p>Chưa có hình ảnh</p>
                                         @endif
                                     <div class="product-desc">
-                                        <span class="product-price">{{ number_format($product->price, 0, ',', '.') }} đ</span>
+                                        @php
+                                            $activeDiscount = $product->discounts()
+                                                ->where('status', 'active')
+                                                ->where('start_date', '<=', now())
+                                                ->where('end_date', '>=', now())
+                                                ->orderBy('percentage', 'desc')
+                                                ->first();
+                                            $originalPrice = $product->price;
+                                            $discountedPrice = $activeDiscount ? $originalPrice * (1 - $activeDiscount->percentage / 100) : null;
+                                        @endphp
+                                        @if($activeDiscount)
+                                            <span class="product-price-discounted">
+                                                {{ number_format($discountedPrice, 0, ',', '.') }} đ
+                                            </span>
+                                            <span class="product-price" style="text-decoration: line-through;">
+                                                {{ number_format($originalPrice, 0, ',', '.') }} đ
+                                            </span>
+                                        @else
+                                            <span class="product-price">
+                                                {{ number_format($originalPrice, 0, ',', '.') }} đ
+                                            </span>
+                                        @endif
                                         <a href="{{ route('shop.product', $product->id) }}" class="product-name">
                                             {{ $product->name }}
                                         </a>
@@ -70,7 +91,28 @@
                                             <p>Chưa có hình ảnh</p>
                                         @endif
                                         <div class="product-desc">
-                                            <span class="product-price">{{ number_format($product->price, 0, ',', '.') }} đ</span>
+                                            @php
+                                                $activeDiscount = $product->discounts()
+                                                    ->where('status', 'active')
+                                                    ->where('start_date', '<=', now())
+                                                    ->where('end_date', '>=', now())
+                                                    ->orderBy('percentage', 'desc')
+                                                    ->first();
+                                                $originalPrice = $product->price;
+                                                $discountedPrice = $activeDiscount ? $originalPrice * (1 - $activeDiscount->percentage / 100) : null;
+                                            @endphp
+                                            @if($activeDiscount)
+                                                <span class="product-price-discounted">
+                                                    {{ number_format($discountedPrice, 0, ',', '.') }} đ
+                                                </span>
+                                                <span class="product-price" style="text-decoration: line-through;">
+                                                    {{ number_format($originalPrice, 0, ',', '.') }} đ
+                                                </span>
+                                            @else
+                                                <span class="product-price">
+                                                    {{ number_format($originalPrice, 0, ',', '.') }} đ
+                                                </span>
+                                            @endif
                                             <a href="{{ route('shop.product', $product->slug) }}" class="product-name">
                                                 {{ $product->name }}
                                             </a>

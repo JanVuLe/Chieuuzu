@@ -25,6 +25,30 @@
                                         <p>Chưa có hình ảnh</p>
                                     @endif
                                 </div>
+                                <hr>
+                                <h4>Danh mục</h4>
+                                <div class="text-muted">
+                                    {{ $product->category->name ?? 'Không có' }}
+                                </div>
+                                <hr>
+                                <h4>Mô tả</h4>
+                                <div class="text-muted">
+                                    {{ $product->description }}
+                                </div>
+                                <hr>
+                                <h4>Dữ liệu</h4>
+                                <div class="text-muted">
+                                    ID: {{ $product->id }}
+                                </div>
+                                <div class="text-muted">
+                                    Slug: {{ $product->slug }}
+                                </div>
+                                <div class="text-muted">
+                                    Category_ID: {{ $product->category_id }}
+                                </div>
+                                <div class="text-muted">
+                                    Discount_ID: {{ $product->discount_id }}
+                                </div>
                             </div>
                             <div class="col-md-7">
                                 <h2 class="font-bold m-b-xs">
@@ -32,15 +56,39 @@
                                 </h2>
                                 <div class="m-t-md">
                                     <h2 class="product-main-price">
-                                        {{ number_format($product->price, 0, ',', '.') }} <small
-                                            class="text-muted">VND</small>
+                                        {{ number_format($product->price, 0, ',', '.') }} <small class="text-muted">VND</small>
+                                        @if($product->discounts->isNotEmpty())
+                                            @foreach($product->discounts as $discount)
+                                                @if($discount->status === 'active')
+                                                    <br>
+                                                    <small class="text-success">
+                                                        Giảm {{ $discount->percentage }}% 
+                                                        ({{ number_format($product->price * (1 - $discount->percentage / 100), 0, ',', '.') }} VND)
+                                                    </small>
+                                                @endif
+                                            @endforeach
+                                        @endif
                                     </h2>
                                 </div>
                                 <hr>
-                                <h4>Danh mục</h4>
-                                <div class="text-muted">
-                                    {{ $product->category->name ?? 'Không có' }}
-                                </div>
+                                <h4>Khuyến mãi</h4>
+                                @if($product->discounts->isNotEmpty())
+                                    <div class="text-muted">
+                                        <ul>
+                                            @foreach($product->discounts as $discount)
+                                                <li>
+                                                    <p>Tên: {{ $discount->name }}</p>
+                                                    <p>Phần trăm giảm: {{ $discount->percentage }}%</p>
+                                                    <p>Ngày bắt đầu: {{ $discount->start_date }}</p>
+                                                    <p>Ngày kết thúc: {{ $discount->end_date }}</p>
+                                                    <p>Trạng thái: {{ $discount->status === 'active' ? 'Đang hoạt động' : 'Không hoạt động' }}</p>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @else
+                                    <p class="text-muted">Sản phẩm chưa có khuyến mãi.</p>
+                                @endif
                                 <hr>
                                 <h4>Kho hàng</h4>
                                 @if($product->warehouses->isNotEmpty())
@@ -68,35 +116,16 @@
                                     <p class="text-muted">Sản phẩm chưa có trong kho nào.</p>
                                 @endif
                                 <hr>
-                                <h4>Mô tả</h4>
-                                <div class="text-muted">
-                                    {{ $product->description }}
-                                </div>
-                                <hr>
-                                <h4>Dữ liệu</h4>
-                                <div class="text-muted">
-                                    ID: {{ $product->id }}
-                                </div>
-                                <div class="text-muted">
-                                    Slug: {{ $product->slug }}
-                                </div>
-                                <div class="text-muted">
-                                    Category_ID: {{ $product->category_id }}
-                                </div>
-                                <div class="text-muted">
-                                    Discount_ID: {{ $product->discount_id }}
-                                </div>
-                                <hr>
-                                <div>
-                                    <div class="btn-group">
-                                        <a href="{{ route('admin.products.edit', $product->slug) }}"
-                                            class="btn btn-primary btn-sm">Sửa</a>
-                                        <a href="{{ route('admin.products.index') }}" class="btn btn-white btn-sm">Trở
-                                            Về</a>
-                                    </div>
-                                </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="btn-group">
+                        <a href="{{ route('admin.products.edit', $product->slug) }}"
+                            class="btn btn-primary btn-sm">Sửa</a>
+                        <a href="{{ route('admin.products.index') }}" class="btn btn-white btn-sm">Trở
+                            Về</a>
                     </div>
                 </div>
             </div>

@@ -95,19 +95,18 @@ class ProductController extends Controller
      */
     public function show($slug)
     {
-        $product = Product::where('slug', $slug)->with(['images', 'category', 'warehouses'])->firstOrFail();
+        $product = Product::where('slug', $slug)->with(['images', 'category', 'warehouses', 'discounts'])->firstOrFail();
         $categories = Category::whereNull('parent_id')->with(['children', 'products'])->get();
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->with('images')
             ->take(6)
             ->get();
-
         $breadcrumbs = [
             ['title' => 'Trang chủ', 'url' => route('shop.home')],
             ['title' => 'Chi tiết sản phẩm', 'url' => ''],
         ];
-        return view('shop.product-detail', compact('product', 'categories', 'relatedProducts', 'breadcrumbs'));
+        return view('admin.products.show', compact('product', 'categories', 'relatedProducts', 'breadcrumbs'));
     }
 
     /**

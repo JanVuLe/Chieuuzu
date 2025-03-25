@@ -38,13 +38,18 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                {{ number_format($item['price'], 0, ',', '.') }} đ
+                                                @if(isset($item['discounted_price']) && $item['discounted_price'] < $item['price'])
+                                                    <span style="text-decoration: line-through;">{{ number_format($item['price'], 0, ',', '.') }} đ</span><br>
+                                                    <span>{{ number_format($item['discounted_price'], 0, ',', '.') }} đ</span>
+                                                @else
+                                                    <span>{{ number_format($item['price'], 0, ',', '.') }} đ</span>
+                                                @endif
                                             </td>
                                             <td width="100">
                                                 <input type="number" class="form-control update-quantity" data-id="{{ $id }}" value="{{ $item['quantity'] }}" min="1">
                                             </td>
                                             <td>
-                                                <h4>{{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }} đ</h4>
+                                                <h4>{{ number_format(($item['discounted_price'] ?? $item['price']) * $item['quantity'], 0, ',', '.') }} đ</h4>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -70,8 +75,15 @@
                     <h5>Tổng kết giỏ hàng</h5>
                 </div>
                 <div class="ibox-content">
-                    <span>Tổng</span>
-                    <h2 class="font-bold cart-total">{{ number_format($total, 0, ',', '.') }} đ</h2>
+                    @if($originalTotal > $total)
+                        <span>Tổng tiền gốc</span>
+                        <h4 style="text-decoration: line-through;">{{ number_format($originalTotal, 0, ',', '.') }} đ</h4>
+                        <span>Tổng sau khuyến mãi</span>
+                        <h2 class="font-bold cart-total">{{ number_format($total, 0, ',', '.') }} đ</h2>
+                    @else
+                        <span>Tổng</span>
+                        <h2 class="font-bold cart-total">{{ number_format($total, 0, ',', '.') }} đ</h2>
+                    @endif
                     <hr/>
                     <div class="m-t-sm">
                         <div class="btn-group">

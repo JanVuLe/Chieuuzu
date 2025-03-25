@@ -11,11 +11,11 @@ class ProductController extends Controller
 {
     public function show($slug)
     {
-        $product = Product::where('slug', $slug)->with(['images', 'category'])->firstOrFail();
+        $product = Product::where('slug', $slug)->with(['images', 'category', 'discounts'])->firstOrFail();
 
         $categories = Category::whereNull('parent_id')->with(['children', 'products'])->get();
 
-        $relatedProducts = Product::where('category_id', $product->category_id)->where('id', '!=', $product->id)->with('images')->take(6)->get();
+        $relatedProducts = Product::where('category_id', $product->category_id)->where('id', '!=', $product->id)->with(['images', 'discounts'])->take(6)->get();
 
         $breadcrumbs = [
             ['title' => 'Trang chủ', 'url' => route('shop.home')],

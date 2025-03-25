@@ -22,6 +22,10 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
         $total = array_sum(array_map(function ($item) {
+            return ($item['discounted_price'] ?? $item['price']) * $item['quantity'];
+        }, $cart));
+
+        $originalTotal = array_sum(array_map(function ($item) {
             return $item['price'] * $item['quantity'];
         }, $cart));
 
@@ -47,7 +51,7 @@ class CartController extends Controller
 
         $categories = Category::whereNull('parent_id')->with(['children', 'products'])->get();
 
-        return view('shop.cart', compact('cart', 'total', 'relatedProducts', 'categories', 'breadcrumbs'));
+        return view('shop.cart', compact('cart', 'total', 'originalTotal', 'relatedProducts', 'categories', 'breadcrumbs'));
     }
 
     /**
@@ -55,9 +59,9 @@ class CartController extends Controller
      */
     public function add(Request $request, $slug)
     {
-        $product = Product::where('slug', $slug)->with('warehouses')->firstOrFail();
+        $product = Product::where('slug', $slug)->with(['warehouses', 'discounts'])->firstOrFail();
 
-        $totalStock = $product->total_stock; // Tổng tồn kho từ tất cả các kho
+        $totalStock = $product->total_stock;
         if ($totalStock < 1) {
             return response()->json([
                 'success' => false,
@@ -66,6 +70,17 @@ class CartController extends Controller
         }
 
         $cart = session()->get('cart', []);
+
+        // Lấy khuyến mãi hiện tại (nếu có)
+        $activeDiscount = $product->discounts()
+            ->where('status', 'active')
+            ->where('start_date', '<=', now())
+            ->where('end_date', '>=', now())
+            ->orderBy('percentage', 'desc')
+            ->first();
+
+        $originalPrice = $product->price;
+        $discountedPrice = $activeDiscount ? $originalPrice * (1 - $activeDiscount->percentage / 100) : $originalPrice;
 
         if (isset($cart[$product->id])) {
             $newQuantity = $cart[$product->id]['quantity'] + 1;
@@ -79,10 +94,12 @@ class CartController extends Controller
         } else {
             $cart[$product->id] = [
                 'name' => $product->name,
-                'price' => $product->price,
+                'price' => $originalPrice, // Giá gốc
+                'discounted_price' => $discountedPrice, // Giá sau khuyến mãi
                 'quantity' => 1,
                 'image' => $product->images->first()->image_url ?? null,
                 'slug' => $product->slug,
+                'discount_percentage' => $activeDiscount ? $activeDiscount->percentage : 0, // Phần trăm giảm giá
             ];
         }
 
@@ -118,7 +135,7 @@ class CartController extends Controller
         }
 
         $total = array_sum(array_map(function ($item) {
-            return $item['price'] * $item['quantity'];
+            return ($item['discounted_price'] ?? $item['price']) * $item['quantity'];
         }, $cart));
 
         session()->put('cart_count', count($cart));
@@ -144,7 +161,7 @@ class CartController extends Controller
         }
 
         $total = array_sum(array_map(function ($item) {
-            return $item['price'] * $item['quantity'];
+            return ($item['discounted_price'] ?? $item['price']) * $item['quantity'];
         }, $cart));
 
         session()->put('cart_count', count($cart));
@@ -204,10 +221,10 @@ class CartController extends Controller
         ]);
 
         $total = array_sum(array_map(function ($item) {
-            return $item['price'] * $item['quantity'];
+            return ($item['discounted_price'] ?? $item['price']) * $item['quantity'];
         }, $cart));
 
-        // Kiểm tra tồn kho trước khi thanh toán
+        // Kiểm tra tồn kho
         foreach ($cart as $productId => $item) {
             $product = Product::with('warehouses')->findOrFail($productId);
             if ($item['quantity'] > $product->total_stock) {
@@ -234,16 +251,16 @@ class CartController extends Controller
                 'shipping_address' => $shippingAddress,
                 'status' => $request->payment_method === 'bank_transfer' ? 'pending' : 'confirmed',
             ]);
-
             foreach ($cart as $productId => $item) {
                 OrderDetail::create([
                     'order_id' => $order->id,
                     'product_id' => $productId,
                     'quantity' => $item['quantity'],
-                    'price' => $item['price'],
+                    'price' => $item['discounted_price'] ?? $item['price'], // Giá sau khuyến mãi
+                    'original_price' => $item['price'], // Giá gốc
                 ]);
 
-                // Giảm số lượng trong kho (giảm từ kho có quantity lớn nhất trước)
+                // Giảm số lượng trong kho
                 $product = Product::with('warehouses')->findOrFail($productId);
                 $remainingQuantity = $item['quantity'];
                 foreach ($product->warehouses as $warehouse) {

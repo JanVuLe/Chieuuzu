@@ -31,7 +31,6 @@
     font-weight: bold;
     text-transform: uppercase;
 }
-
 </style>
 @endpush
 @section('content')
@@ -63,7 +62,28 @@
                                 {{ $product->name }}
                             </h2>
                             <div class="m-t-md">
-                                <h2 class="product-main-price">{{ number_format($product->price, 0, ',', '.') }} đ</h2>
+                                @php
+                                    $activeDiscount = $product->discounts()
+                                        ->where('status', 'active')
+                                        ->where('start_date', '<=', now())
+                                        ->where('end_date', '>=', now())
+                                        ->orderBy('percentage', 'desc')
+                                        ->first();
+                                    $originalPrice = $product->price;
+                                    $discountedPrice = $activeDiscount ? $originalPrice * (1 - $activeDiscount->percentage / 100) : null;
+                                @endphp
+                                @if($activeDiscount)
+                                    <h2 class="product-main-price" style="text-decoration: line-through;">
+                                        {{ number_format($originalPrice, 0, ',', '.') }} đ
+                                    </h2>
+                                    <h2 class="product-main-price">
+                                        {{ number_format($discountedPrice, 0, ',', '.') }} đ
+                                    </h2>
+                                @else
+                                    <h2 class="product-main-price">
+                                        {{ number_format($originalPrice, 0, ',', '.') }} đ
+                                    </h2>
+                                @endif
                                 <p><strong>Tồn kho:</strong> {{ $product->total_stock }} sản phẩm</p>
                             </div>
                             <hr>
@@ -110,7 +130,28 @@
                             <p>Chưa có hình ảnh</p>
                         @endif
                         <div class="product-desc">
-                            <span class="product-price">{{ number_format($related->price, 0, ',', '.') }} đ</span>
+                            @php
+                                $relatedDiscount = $related->discounts()
+                                    ->where('status', 'active')
+                                    ->where('start_date', '<=', now())
+                                    ->where('end_date', '>=', now())
+                                    ->orderBy('percentage', 'desc')
+                                    ->first();
+                                $relatedOriginalPrice = $related->price;
+                                $relatedDiscountedPrice = $relatedDiscount ? $relatedOriginalPrice * (1 - $relatedDiscount->percentage / 100) : null;
+                            @endphp
+                            @if($relatedDiscount)
+                                <span class="product-price" style="text-decoration: line-through;">
+                                    {{ number_format($relatedOriginalPrice, 0, ',', '.') }} đ
+                                </span>
+                                <span class="product-price-discounted">
+                                    {{ number_format($relatedDiscountedPrice, 0, ',', '.') }} đ
+                                </span>
+                            @else
+                                <span class="product-price">
+                                    {{ number_format($relatedOriginalPrice, 0, ',', '.') }} đ
+                                </span>
+                            @endif
                             <a href="{{ route('shop.product', $related->slug) }}" class="product-name">
                                 {{ $related->name }}
                             </a>

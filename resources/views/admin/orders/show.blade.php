@@ -8,7 +8,7 @@
         </div>
         <div class="ibox-content">
             <p><strong>Khách hàng:</strong> {{ $order->user->name ?? 'N/A' }}</p>
-            <p><strong>Tổng tiền:</strong> {{ number_format($order->total_price, 2) }}</p>
+            <p><strong>Tổng tiền:</strong> {{ number_format($order->total_price, 2) }} đ</p>
             <p><strong>Trạng thái:</strong> {{ $order->status }}</p>
             <p><strong>Địa chỉ giao hàng:</strong> {{ $order->shipping_address ?? 'N/A' }}</p>
             <p><strong>Tỉnh/Thành:</strong> {{ $order->province ?? 'N/A' }}</p>
@@ -24,7 +24,8 @@
                     <tr>
                         <th>Sản phẩm</th>
                         <th>Số lượng</th>
-                        <th>Giá</th>
+                        <th>Giá gốc</th>
+                        <th>Giá sau khuyến mãi</th>
                         <th>Tổng</th>
                     </tr>
                 </thead>
@@ -33,8 +34,21 @@
                     <tr>
                         <td>{{ $detail->product->name ?? 'N/A' }}</td>
                         <td>{{ $detail->quantity }}</td>
-                        <td>{{ number_format($detail->price, 2) }}</td>
-                        <td>{{ number_format($detail->price * $detail->quantity, 2) }}</td>
+                        <td>
+                            @if($detail->original_price && $detail->original_price > $detail->price)
+                                {{ number_format($detail->original_price, 2) }} đ
+                            @else
+                                {{ number_format($detail->price, 2) }} đ
+                            @endif
+                        </td>
+                        <td>
+                            @if($detail->original_price && $detail->original_price > $detail->price)
+                                {{ number_format($detail->price, 2) }} đ
+                            @else
+                                N/A
+                            @endif
+                        </td>
+                        <td>{{ number_format($detail->price * $detail->quantity, 2) }} đ</td>
                     </tr>
                     @endforeach
                 </tbody>
