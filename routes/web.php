@@ -16,6 +16,8 @@ use App\Http\Controllers\Shop\ContactController;
 use App\Http\Controllers\Shop\ProductController as ShopProductController;
 use App\Http\Controllers\Shop\ShopController;
 use App\Http\Controllers\Shop\LocationController;
+use App\Http\Controllers\Shop\NotificationController;
+use App\Http\Controllers\Shop\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -25,7 +27,7 @@ Route::prefix('admin')->group(function () {
     Route::post('/login/store', [AdminLoginController::class, 'store'])->name('admin.login.store');
     Route::post('/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
-    Route::middleware(['auth'])->group(function () {
+    Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('admin');
         //Dashboard
         Route::get('/dashboard', function () {
@@ -83,6 +85,8 @@ Route::prefix('admin')->group(function () {
             'update'  => 'admin.warehouses.update',
             'destroy' => 'admin.warehouses.destroy'
         ]);
+        Route::delete('/warehouses/{warehouseId}/remove-product/{productId}', [WarehouseController::class, 'removeProduct'])->name('admin.warehouses.removeProduct');
+        Route::post('/warehouses/{id}/add-product', [WarehouseController::class, 'addProduct'])->name('admin.warehouses.addProduct');
         //Orders
         Route::resource('/orders', OrderController::class)->names([
             'index'   => 'admin.orders.index',
@@ -93,8 +97,8 @@ Route::prefix('admin')->group(function () {
             'update'  => 'admin.orders.update',
             'destroy' => 'admin.orders.destroy'
         ]);
-        Route::post('/warehouses/{id}/add-product', [WarehouseController::class, 'addProduct'])->name('admin.warehouses.addProduct');
-        Route::delete('/warehouses/{warehouseId}/remove-product/{productId}', [WarehouseController::class, 'removeProduct'])->name('admin.warehouses.removeProduct');
+        Route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('admin.orders.update-status');
+        Route::get('/order-success/{orderId}', [CartController::class, 'orderSuccess'])->name('shop.order.success');
         //Profile
         Route::get('/profile', function () {
             return view('admin.profile');
@@ -103,35 +107,46 @@ Route::prefix('admin')->group(function () {
 });
 
 //SHOP
-//Login logout
-Route::get('/login', [ShopLoginController::class, 'showLoginForm'])->name('shop.login');
-Route::post('/login/store', [ShopLoginController::class, 'store'])->name('shop.login.store');
-Route::post('/logout', [ShopLoginController::class, 'logout'])->name('logout');
-Route::get('/register', [ShopRegisterController::class, 'showRegisterForm'])->name('shop.register');
-Route::post('/register', [ShopRegisterController::class, 'register'])->name('shop.register.store');
-//Home
 Route::get('/', [ShopController::class, 'index'])->name('shop.home');
 Route::get('/category/{id}', [ShopController::class, 'category'])->name('shop.category');
-Route::get('/contact', [ShopController::class, 'contact'])->name('shop.contact');
 Route::get('/about', [ShopController::class, 'about'])->name('shop.about');
 Route::get('/search', [ShopController::class, 'search'])->name('shop.search');
-//Profile
-Route::get('/profile', [UserController::class, 'profile'])->name('shop.profile')->middleware('auth');
-//Product detail
+
+// Authentication (Login, Register, Logout)
+Route::get('/login', [ShopLoginController::class, 'showLoginForm'])->name('shop.login');
+Route::post('/login/store', [ShopLoginController::class, 'store'])->name('shop.login.store');
+Route::post('/logout', [ShopLoginController::class, 'logout'])->name('shop.logout');
+Route::get('/register', [ShopRegisterController::class, 'showRegisterForm'])->name('shop.register');
+Route::post('/register', [ShopRegisterController::class, 'register'])->name('shop.register.store');
+
+// Product
 Route::get('/product/{slug}', [ShopProductController::class, 'show'])->name('shop.product');
-//Cart
-Route::get('/cart', [CartController::class, 'index'])->name('shop.cart');
-Route::post('/cart/add/{slug}', [CartController::class, 'add'])->name('shop.cart.add');
-Route::post('/cart/update', [CartController::class, 'update'])->name('shop.cart.update');
-Route::post('/cart/remove', [CartController::class, 'remove'])->name('shop.cart.remove');
-//Order
-Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('shop.cart.checkout');
-Route::get('/payment', [CartController::class, 'payment'])->name('shop.payment');
-//Contact
+
+// Contact
 Route::get('/contact', [ContactController::class, 'index'])->name('shop.contact');
 Route::post('/contact', [ContactController::class, 'submit'])->name('shop.contact.submit');
-//Notification
-//API
-Route::get('/api/provinces', [LocationController::class, 'getProvinces']);
-Route::get('/api/districts', [LocationController::class, 'getDistricts']);
-Route::get('/api/wards', [LocationController::class, 'getWards']);
+
+// API (Location)
+Route::get('/api/provinces', [LocationController::class, 'getProvinces'])->name('api.provinces');
+Route::get('/api/districts', [LocationController::class, 'getDistricts'])->name('api.districts');
+Route::get('/api/wards', [LocationController::class, 'getWards'])->name('api.wards');
+
+// Routes yêu cầu đăng nhập
+Route::middleware(['auth', 'role:user'])->group(function () {
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'index'])->name('shop.profile');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('shop.profile.update');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('shop.notifications');
+    // Cart
+    Route::get('/cart', [CartController::class, 'index'])->name('shop.cart');
+    Route::post('/cart/add/{slug}', [CartController::class, 'add'])->name('shop.cart.add');
+    Route::post('/cart/update', [CartController::class, 'update'])->name('shop.cart.update');
+    Route::post('/cart/remove', [CartController::class, 'remove'])->name('shop.cart.remove');
+    Route::get('/payment', [CartController::class, 'payment'])->name('shop.payment');
+    Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('shop.cart.checkout');
+    // Order
+    Route::get('/order-success/{orderId}', [CartController::class, 'orderSuccess'])->name('shop.order.success');
+    Route::post('/order/cancel/{orderId}', [CartController::class, 'cancelOrder'])->name('shop.order.cancel');
+    // Notification
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('shop.notifications');
+});

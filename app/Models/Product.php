@@ -27,7 +27,13 @@ class Product extends Model
     public function warehouses()
     {
         return $this->belongsToMany(Warehouse::class, 'warehouse_products')
-            ->withPivot('quantity');
+            ->withPivot('quantity')
+            ->withTimestamps();
+    }
+
+    public function getTotalStockAttribute()
+    {
+        return $this->warehouses->sum('pivot.quantity');
     }
 
     public static function boot()

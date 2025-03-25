@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css') }}">
-    
+    <link rel="stylesheet" href="{{ asset('assets/css/plugins/bootstrapSocial/bootstrap-social.css') }}">
     @stack('styles')
     
 </head>

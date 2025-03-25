@@ -64,6 +64,7 @@
                             </h2>
                             <div class="m-t-md">
                                 <h2 class="product-main-price">{{ number_format($product->price, 0, ',', '.') }} đ</h2>
+                                <p><strong>Tồn kho:</strong> {{ $product->total_stock }} sản phẩm</p>
                             </div>
                             <hr>
                             <h4>Mô tả sản phẩm:</h4>
@@ -140,7 +141,7 @@
     $('.add-to-cart').on('click', function() {
         var slug = $(this).data('slug');
         $.ajax({
-            url: '{{ route("shop.cart.add", "") }}/' + slug,
+            url: '{{ route("shop.cart.add", ":slug") }}'.replace(':slug', slug),
             method: 'POST',
             data: {
                 _token: '{{ csrf_token() }}'

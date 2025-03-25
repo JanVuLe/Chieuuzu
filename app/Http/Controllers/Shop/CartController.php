@@ -11,6 +11,7 @@ use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
@@ -54,12 +55,27 @@ class CartController extends Controller
      */
     public function add(Request $request, $slug)
     {
-        $product = Product::where('slug', $slug)->firstOrFail();
+        $product = Product::where('slug', $slug)->with('warehouses')->firstOrFail();
+
+        $totalStock = $product->total_stock; // Tổng tồn kho từ tất cả các kho
+        if ($totalStock < 1) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sản phẩm đã hết hàng!',
+            ]);
+        }
 
         $cart = session()->get('cart', []);
 
         if (isset($cart[$product->id])) {
-            $cart[$product->id]['quantity']++;
+            $newQuantity = $cart[$product->id]['quantity'] + 1;
+            if ($newQuantity > $totalStock) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Số lượng trong giỏ hàng vượt quá tồn kho!',
+                ]);
+            }
+            $cart[$product->id]['quantity'] = $newQuantity;
         } else {
             $cart[$product->id] = [
                 'name' => $product->name,
@@ -90,6 +106,13 @@ class CartController extends Controller
         $quantity = $request->input('quantity');
 
         if (isset($cart[$productId]) && $quantity > 0) {
+            $product = Product::findOrFail($productId);
+            if ($quantity > $product->stock) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Số lượng vượt quá tồn kho!',
+                ]);
+            }
             $cart[$productId]['quantity'] = $quantity;
             session()->put('cart', $cart);
         }
@@ -184,7 +207,14 @@ class CartController extends Controller
             return $item['price'] * $item['quantity'];
         }, $cart));
 
-        // Tạo chuỗi shipping_address từ các trường riêng biệt
+        // Kiểm tra tồn kho trước khi thanh toán
+        foreach ($cart as $productId => $item) {
+            $product = Product::with('warehouses')->findOrFail($productId);
+            if ($item['quantity'] > $product->total_stock) {
+                return redirect()->route('shop.cart')->with('error', "Sản phẩm {$item['name']} không đủ tồn kho.");
+            }
+        }
+
         $shippingAddress = implode(', ', array_filter([
             $request->input('street'),
             $request->input('ward'),
@@ -192,40 +222,102 @@ class CartController extends Controller
             $request->input('province'),
         ]));
 
-        // Lưu đơn hàng
-        $order = Order::create([
-            'user_id' => $user->id,
-            'total_price' => $total,
-            'province' => $request->input('province'),
-            'district' => $request->input('district'),
-            'ward' => $request->input('ward'),
-            'street' => $request->input('street'),
-            'shipping_address' => $shippingAddress,
-            'status' => 'processing',
-        ]);
+        DB::beginTransaction();
+        try {
+            $order = Order::create([
+                'user_id' => $user->id,
+                'total_price' => $total,
+                'province' => $request->input('province'),
+                'district' => $request->input('district'),
+                'ward' => $request->input('ward'),
+                'street' => $request->input('street'),
+                'shipping_address' => $shippingAddress,
+                'status' => $request->payment_method === 'bank_transfer' ? 'pending' : 'confirmed',
+            ]);
 
-        // Tạo chi tiết đơn hàng
-        foreach ($cart as $productId => $item) {
-            OrderDetail::create([
+            foreach ($cart as $productId => $item) {
+                OrderDetail::create([
+                    'order_id' => $order->id,
+                    'product_id' => $productId,
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                ]);
+
+                // Giảm số lượng trong kho (giảm từ kho có quantity lớn nhất trước)
+                $product = Product::with('warehouses')->findOrFail($productId);
+                $remainingQuantity = $item['quantity'];
+                foreach ($product->warehouses as $warehouse) {
+                    if ($remainingQuantity <= 0) break;
+                    $currentQuantity = $warehouse->pivot->quantity;
+                    if ($currentQuantity > 0) {
+                        $reduce = min($remainingQuantity, $currentQuantity);
+                        $warehouse->pivot->quantity -= $reduce;
+                        $warehouse->pivot->save();
+                        $remainingQuantity -= $reduce;
+                    }
+                }
+            }
+
+            Payment::create([
                 'order_id' => $order->id,
-                'product_id' => $productId,
-                'quantity' => $item['quantity'],
-                'price' => $item['price'],
+                'method' => $request->payment_method,
+                'amount' => $total,
+                'status' => 'pending',
+            ]);
+
+            session()->forget('cart');
+            session()->put('cart_count', 0);
+
+            DB::commit();
+            return redirect()->route('shop.order.success', $order->id)
+                ->with('success', 'Đơn hàng của bạn đã được đặt thành công!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('shop.cart')->with('error', 'Có lỗi xảy ra khi đặt hàng: ' . $e->getMessage());
+        }
+    }
+
+    public function orderSuccess($orderId)
+    {
+        $order = Order::with('orderDetails.product')->findOrFail($orderId);
+        $categories = Category::whereNull('parent_id')->with(['children', 'products'])->get();
+
+        return view('shop.order_success', compact('order', 'categories'));
+    }
+
+    public function cancelOrder($orderId)
+    {
+        $order = Order::where('id', $orderId)->where('user_id', Auth::id())->firstOrFail();
+        if ($order->status === 'pending' || $order->status === 'confirmed') {
+            $order->status = 'cancelled';
+            $order->save();
+
+            // Hoàn lại số lượng vào kho (thêm đều vào kho đầu tiên, hoặc tùy logic bạn muốn)
+            foreach ($order->orderDetails as $detail) {
+                $product = Product::with('warehouses')->findOrFail($detail->product_id);
+                $firstWarehouse = $product->warehouses->first();
+                if ($firstWarehouse) {
+                    $firstWarehouse->pivot->quantity += $detail->quantity;
+                    $firstWarehouse->pivot->save();
+                } else {
+                    // Nếu chưa có kho, thêm vào kho mặc định (giả sử warehouse_id = 1)
+                    DB::table('warehouse_products')->insert([
+                        'warehouse_id' => 1,
+                        'product_id' => $detail->product_id,
+                        'quantity' => $detail->quantity,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+            }
+            return response()->json([
+                'success' => true,
+                'message' => 'Đơn hàng đã được hủy.'
             ]);
         }
-
-        // Tạo bản ghi thanh toán
-        Payment::create([
-            'order_id' => $order->id,
-            'method' => $request->payment_method,
-            'amount' => $total,
-            'status' => 'pending',
-            'note' => $request->payment_method === 'bank_transfer' ? 'Chờ xác nhận chuyển khoản' : null,
+        return response()->json([
+            'success' => false,
+            'error' => 'Không thể hủy đơn hàng ở trạng thái hiện tại.'
         ]);
-
-        session()->forget('cart');
-        session()->put('cart_count', 0);
-
-        return redirect()->route('shop.home')->with('success', 'Đơn hàng của bạn đã được đặt thành công!');
     }
 }

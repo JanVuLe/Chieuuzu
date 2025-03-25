@@ -94,7 +94,9 @@
                         <!-- Khi đã đăng nhập -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-user"></i>
-                            <span class="badge bg-primary">{{ $notificationCount ?? 7 }}</span> <!-- Số thông báo -->
+                            <span class="badge bg-primary">
+                                {{ Auth::user()->orders()->whereIn('status', ['pending', 'confirmed', 'processing'])->where('updated_at', '>', now()->subDays(7))->count() }}
+                            </span>
                         </a>
                         <ul class="dropdown-menu">
                             <li>
@@ -103,15 +105,15 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="{{ route('shop.notifications') }}">
                                     <i class="fa fa-bell"></i> Thông báo
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <a href="{{ route('shop.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="fa fa-sign-out"></i> Đăng xuất
                                 </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                <form id="logout-form" action="{{ route('shop.logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
                             </li>

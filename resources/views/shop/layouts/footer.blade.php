@@ -25,9 +25,15 @@
             <div class="col-md-4">
                 <h5>Theo dõi chúng tôi</h5>
                 <ul class="list-unstyled">
-                    <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
-                    <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
-                    <li><a href="#"><i class="fa fa-instagram"></i> Instagram</a></li>
+                    <li>
+                        <a class="btn btn-social-icon btn-facebook m-xxs" ><span class="fa fa-facebook"></span></a>
+                    </li>
+                    <li>
+                        <a class="btn btn-social-icon btn-twitter m-xxs" ><span class="fa fa-twitter"></span></a>
+                    </li>
+                    <li>
+                        <a class="btn btn-social-icon btn-instagram m-xxs" ><span class="fa fa-instagram"></span></a>
+                    </li>
                 </ul>
             </div>
         </div>

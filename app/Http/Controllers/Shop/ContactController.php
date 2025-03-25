@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Mail\ContactMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -28,9 +30,7 @@ class ContactController extends Controller
             'message' => 'required|string',
         ]);
 
-        // Logic gửi email hoặc lưu tin nhắn vào database
-        // Ví dụ: Gửi email
-        // \Mail::to('tanchaulongap@gmail.com')->send(new \App\Mail\ContactMail($request->all()));
+        Mail::to('vu_dth216249@student.agu.edu.vn')->send(new ContactMail($request->all()));
 
         return redirect()->back()->with('success', 'Tin nhắn của bạn đã được gửi!');
     }

@@ -21,7 +21,7 @@ class ShopLoginController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6'
         ], [
@@ -31,11 +31,15 @@ class ShopLoginController extends Controller
             'password.min' => 'mật khẩu phải có ít nhất 8 ký tự'
         ]);
 
-        if (Auth::attempt([
-            'email' => $request->input('email'),
-            'password' => $request->input('password')
-        ])) {
-            return redirect()->route('shop.home')->with('success', 'Đăng nhập thành công!');
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            $user = Auth::user();
+
+            if ($user->isAdmin()) {
+                return redirect()->route('admin.dashboard');
+            } else {
+                return redirect()->route('shop.home');
+            }
         }
 
         Session::flash('error', 'Email hoặc mật khẩu không đúng');

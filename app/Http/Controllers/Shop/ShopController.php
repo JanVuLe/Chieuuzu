@@ -21,5 +21,4 @@ class ShopController extends Controller
         $categories = Category::whereNull('parent_id')->with(['children', 'products'])->get();
         return view('shop.home', compact('categories', 'banners'));
     }
-
 }
