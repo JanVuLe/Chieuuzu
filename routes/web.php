@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\WarehouseController;
+use App\Http\Controllers\Admin\RevenueController;
 use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Auth\ShopLoginController;
 use App\Http\Controllers\Auth\ShopRegisterController;
@@ -30,9 +31,7 @@ Route::prefix('admin')->group(function () {
     Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('admin');
         //Dashboard
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('admin.dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard.index');
         //Users
         Route::resource('/users', UserController::class)->names([
             'index'   => 'admin.users.index',
@@ -99,6 +98,8 @@ Route::prefix('admin')->group(function () {
         ]);
         Route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('admin.orders.update-status');
         Route::get('/order-success/{orderId}', [CartController::class, 'orderSuccess'])->name('shop.order.success');
+        //Revenue
+        Route::get('/revenue', [RevenueController::class, 'index'])->name('admin.revenue.index');
         //Profile
         Route::get('/profile', function () {
             return view('admin.profile');

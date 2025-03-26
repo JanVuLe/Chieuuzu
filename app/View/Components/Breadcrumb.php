@@ -18,7 +18,7 @@ class Breadcrumb extends Component
         }
 
         $breadcrumbs = [
-            ['name' => 'Trang chủ', 'url' => route('admin.dashboard')]
+            ['name' => 'Trang chủ', 'url' => route('admin.dashboard.index')]
         ];
 
         $routes = [
@@ -27,7 +27,8 @@ class Breadcrumb extends Component
             'admin.products' => 'Sản phẩm',
             'admin.warehouses' => 'Kho hàng',
             'admin.discounts' => 'Khuyến mãi',
-            'admin.orders' => 'Hóa đơn'
+            'admin.orders' => 'Hóa đơn',
+            'admin.revenue' => 'Thống kê'
         ];
 
         foreach ($routes as $prefix => $label) {

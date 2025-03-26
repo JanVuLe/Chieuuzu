@@ -21,7 +21,7 @@
                     IN+
                 </div>
             </li>
-            <li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><a href="{{ route('admin.dashboard') }}"><i class="fa fa-th-large"></i><span class="nav-label">Bảng điều khiển</span></a></li>
+            <li class="{{ request()->routeIs('admin.dashboard.*') ? 'active' : '' }}"><a href="{{ route('admin.dashboard.index') }}"><i class="fa fa-th-large"></i><span class="nav-label">Bảng điều khiển</span></a></li>
             <li class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}"><a href="{{ route('admin.users.index') }}"><i class="fa fa-users "></i><span class="nav-label">Người dùng</span></a></li>
             <li class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><a href="{{ route('admin.categories.index') }}"><i class="fa fa-bookmark"></i><span class="nav-label">Danh mục sản phẩm</span></a></li>
             <li class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
@@ -40,6 +40,7 @@
                 </ul>
             </li>
             <li class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"><a href="{{ route('admin.orders.index') }}"><i class="bi bi-receipt"></i><span class="nav-label">Hóa đơn</span></a></li>
+            <li class="{{ request()->routeIs('admin.revenue.*') ? 'active' : '' }}"><a href="{{ route('admin.revenue.index') }}"><i class="bi bi-receipt"></i><span class="nav-label">Thống kê doanh thu</span></a></li>
         </ul>
     </div>
 </nav>
