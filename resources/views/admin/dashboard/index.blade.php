@@ -5,18 +5,16 @@
 @section('content')
     <div class="container-fluid">
         <!-- Form lọc khoảng thời gian -->
-        <div class="row mb-4">
+        <div class="row mb-4 p-xs">
             <div class="col-12">
                 <div class="card shadow-sm border-0">
                     <div class="card-body">
                         <h5 class="card-title text-primary mb-3">Lọc dữ liệu</h5>
                         <form method="GET" action="{{ route('admin.dashboard.index') }}" class="form-inline justify-content-between">
                             <div class="input-group mb-2 mb-md-0 me-2">
-                                <span class="input-group-text bg-light"><i class="bi bi-calendar"></i></span>
                                 <input type="date" name="start_date" id="start_date" value="{{ $startDate }}" class="form-control">
                             </div>
                             <div class="input-group mb-2 mb-md-0 me-2">
-                                <span class="input-group-text bg-light"><i class="bi bi-calendar"></i></span>
                                 <input type="date" name="end_date" id="end_date" value="{{ $endDate }}" class="form-control">
                             </div>
                             <button type="submit" class="btn btn-primary btn-sm">Lọc</button>
@@ -30,33 +28,33 @@
         <div class="row mb-4">
             <div class="col-md-3">
                 <div class="card shadow-sm border-0 bg-gradient-primary text-white">
-                    <div class="card-body">
-                        <h6 class="card-title"><i class="bi bi-cash-stack me-2"></i>Tổng doanh thu</h6>
-                        <h4>{{ number_format($totalRevenue, 0, ',', '.') }} VNĐ</h4>
+                    <div class="card-body ">
+                        <h5 class="card-title p-xxs"><i class="bi bi-cash-stack me-2"></i> Tổng doanh thu</h5>
+                        <h4 class="p-xxs">{{ number_format($totalRevenue, 0, ',', '.') }} VNĐ</h4>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card shadow-sm border-0 bg-gradient-success text-white">
                     <div class="card-body">
-                        <h6 class="card-title"><i class="bi bi-cart-check me-2"></i>Tổng đơn hàng</h6>
-                        <h4>{{ $totalOrders }}</h4>
+                        <h5 class="card-title p-xxs"><i class="bi bi-cart-check me-2"></i> Tổng đơn hàng</h5>
+                        <h4 class="p-xxs">{{ $totalOrders }}</h4>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card shadow-sm border-0 bg-gradient-info text-white">
                     <div class="card-body">
-                        <h6 class="card-title"><i class="bi bi-person-plus me-2"></i>Khách hàng mới</h6>
-                        <h4>{{ $newCustomers }}</h4>
+                        <h5 class="card-title p-xxs"><i class="bi bi-person-plus me-2"></i> Khách hàng mới</h5>
+                        <h4 class="p-xxs">{{ $newCustomers }}</h4>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card shadow-sm border-0 bg-gradient-warning text-white">
                     <div class="card-body">
-                        <h6 class="card-title"><i class="bi bi-exclamation-triangle me-2"></i>Sản phẩm sắp hết</h6>
-                        <h4>{{ $lowStockProducts }}</h4>
+                        <h5 class="card-title p-xxs"><i class="bi bi-exclamation-triangle me-2"></i> Sản phẩm sắp hết</h5>
+                        <h4 class="p-xxs">{{ $lowStockProducts }}</h4>
                     </div>
                 </div>
             </div>

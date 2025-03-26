@@ -29,7 +29,7 @@
             <div class="col-12">
                 <div class="card shadow-sm border-0 bg-gradient-primary text-white">
                     <div class="card-body d-flex align-items-center">
-                        <h5 class="card-title mb-0 me-3"><i class="bi bi-cash-stack me-2"></i>Tổng doanh thu</h5>
+                        <h5 class="card-title mb-0 me-3 p-xs"><i class="bi bi-cash-stack me-2"></i>Tổng doanh thu</h5>
                         <h3 class="mb-0 p-xs">{{ number_format($totalRevenue, 0, ',', '.') }} VNĐ</h3>
                     </div>
                 </div>
