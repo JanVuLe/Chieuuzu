@@ -44,6 +44,9 @@
                                 <i class="bi bi-google"></i> Đăng nhập với Google
                             </a>
                         </div>
+                        <div class="text-center mt-3">
+                            <a href="{{ route('password.request') }}">Quên mật khẩu?</a>
+                        </div>
                     </form>
                 </div>
             </div>

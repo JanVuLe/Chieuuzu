@@ -65,6 +65,18 @@
 </footer>
 
 <style>
+    footer {
+        flex-shrink: 0;
+        background-color: #f8f9fa;
+        padding: 10px 0;
+        text-align: center;
+        width: 100%; /* Đảm bảo footer chiếm toàn bộ chiều ngang */
+    }
+
+    footer .container {
+        max-width: 1140px; /* Giới hạn chiều rộng của container */
+        margin: 0 auto; /* Căn giữa container */
+    }
     footer.bg-dark {
         background: linear-gradient(180deg, #212529, #343a40);
     }
@@ -122,5 +134,21 @@
     .btn-social-instagram {
         background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
         color: white;
+    }
+    html, body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #page-wrapper {
+        flex: 1;
     }
 </style>
