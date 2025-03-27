@@ -58,7 +58,24 @@
                     </a>
                     <ul role="menu" class="dropdown-menu">
                         @foreach ($categories as $category)
-                            <li><a href="{{ route('shop.category', $category->id) }}">{{ $category->name }}</a></li>
+                            @if ($category->children->isNotEmpty())
+                                <li class="dropdown-submenu">
+                                    <a href="{{ route('shop.category', $category->slug) }}" class="dropdown-toggle" data-toggle="dropdown">
+                                        {{ $category->name }}
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        @foreach ($category->children as $child)
+                                            <li>
+                                                <a href="{{ route('shop.category', $child->slug) }}">{{ $child->name }}</a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                            @else
+                                <li>
+                                    <a href="{{ route('shop.category', $category->slug) }}">{{ $category->name }}</a>
+                                </li>
+                            @endif
                         @endforeach
                     </ul>
                 </li>

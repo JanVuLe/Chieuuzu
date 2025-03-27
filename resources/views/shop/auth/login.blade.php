@@ -39,6 +39,11 @@
                         <div class="text-center mt-3">
                             <p>Chưa có tài khoản? <a href="{{ route('shop.register') }}">Đăng ký ngay</a></p>
                         </div>
+                        <div class="text-center mt-3">
+                            <a href="{{ route('auth.google') }}" class="btn btn-danger btn-block">
+                                <i class="bi bi-google"></i> Đăng nhập với Google
+                            </a>
+                        </div>
                     </form>
                 </div>
             </div>

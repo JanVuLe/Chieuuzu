@@ -19,6 +19,7 @@ use App\Http\Controllers\Shop\ShopController;
 use App\Http\Controllers\Shop\LocationController;
 use App\Http\Controllers\Shop\NotificationController;
 use App\Http\Controllers\Shop\ProfileController;
+use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -110,6 +111,7 @@ Route::prefix('admin')->group(function () {
 //SHOP
 Route::get('/', [ShopController::class, 'index'])->name('shop.home');
 Route::get('/category/{id}', [ShopController::class, 'category'])->name('shop.category');
+Route::get('/category/{slug}', [ShopController::class, 'category'])->name('shop.category');
 Route::get('/about', [ShopController::class, 'about'])->name('shop.about');
 Route::get('/search', [ShopController::class, 'search'])->name('shop.search');
 
@@ -153,3 +155,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     // Notification
     Route::get('/notifications', [NotificationController::class, 'index'])->name('shop.notifications');
 });
+
+// Google Login
+Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('auth.google.callback');

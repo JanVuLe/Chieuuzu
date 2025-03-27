@@ -25,4 +25,22 @@ class ShopController extends Controller
             ])->get();
         return view('shop.home', compact('categories', 'banners'));
     }
+
+    public function category($slug)
+    {
+        $category = Category::where('slug', $slug)->with('products')->first();
+
+        if (!$category) {
+            abort(404, 'Danh mục không tồn tại.');
+        }
+
+        $products = $category->products;
+
+        $breadcrumbs = [
+            ['title' => 'Trang chủ', 'url' => route('shop.home')],
+            ['title' => $category->name, 'url' => ''],
+        ];
+
+        return view('shop.category', compact('category', 'products', 'breadcrumbs'));
+    }
 }
