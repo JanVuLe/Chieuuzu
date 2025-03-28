@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/bootstrapSocial/bootstrap-social.css') }}">
+    <!-- Toastr CSS -->
+    <link href="{{ asset('assets/css/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
     @stack('styles')
     
 </head>
@@ -69,6 +71,8 @@
     <!-- Sparkline demo data  -->
     <script src="{{ asset('assets/js/demo/sparkline-demo.js') }}"></script>
 
+    <!-- Toastr JS -->
+    <script src="{{ asset('assets/js/plugins/toastr/toastr.min.js') }}"></script>
     
     @stack('scripts')
 

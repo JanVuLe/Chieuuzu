@@ -1,6 +1,9 @@
 @extends('shop.layouts.master')
 @section('title', 'Giỏ hàng')
 @section('content')
+<div class="product-detail-header" style="background-image: url('{{ asset('storage/banner/slide_2.jpg') }}');">
+    <h1 class="product-title">GIỎ HÀNG</h1>
+</div>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-md-9">
@@ -154,6 +157,37 @@
         alert("{{ session('error') }}");
     </script>
 @endif
+@push('styles')
+<style>
+.product-detail-header {
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+}
+
+.product-detail-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 214, 103, 0.6); /* Lớp phủ vàng nhẹ */
+}
+
+.product-title {
+    position: relative;
+    background: #fff;
+    padding: 10px 20px;
+    border: 2px solid #8B0000;
+    color: #8B0000;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+</style>
+@endpush
 @push('scripts')
 <script>
     $(document).ready(function() {

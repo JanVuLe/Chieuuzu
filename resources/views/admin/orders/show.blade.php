@@ -58,13 +58,13 @@
                     @csrf
                     <label><strong>Trạng thái:</strong></label>
                     <select name="status" class="form-control m-xs">
-                        <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                        <option value="confirmed" {{ $order->status == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
-                        <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>Processing</option>
-                        <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>Shipped</option>
-                        <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>Delivered</option>
-                        <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
-                        <option value="failed" {{ $order->status == 'failed' ? 'selected' : '' }}>Failed</option>
+                        <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Chờ xác nhận</option>
+                        <option value="confirmed" {{ $order->status == 'confirmed' ? 'selected' : '' }}>Đã xác nhận</option>
+                        <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>Đang xử lý</option>
+                        <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>Đã giao hàng</option>
+                        <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>Hoàn tất</option>
+                        <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Đã hủy</option>
+                        <option value="failed" {{ $order->status == 'failed' ? 'selected' : '' }}>Thất bại</option>
                     </select>
                     <button type="submit" class="btn btn-warning mt-2 m-xs">Cập nhật trạng thái</button>
                 </form>

@@ -3,7 +3,7 @@
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element"> <span>
-                    <img alt="Avatar" class="img-circle" src="{{ Auth::user()->avatar ? asset('storage/avatars/' . Auth::user()->avatar) : asset('storage/avatars/default-avatar.png') }}" />
+                    <img alt="Avatar" class="img-circle" src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('storage/avatars/default-avatar.png') }}" />
                     </span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{ Auth::user()->name }}</strong>
@@ -12,13 +12,13 @@
                         </span>
                     </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li><a href="{{ route('admin.profile') }}">Thông tin</i></a></li>
+                        <li><a href="{{ route('admin.profile.index') }}">Thông tin</i></a></li>
                         <li class="divider"></li>
                         <li><a href="{{ route('admin.logout') }}">Đăng Xuất</a></li>
                     </ul>
                 </div>
                 <div class="logo-element">
-                    IN+
+                    <img src="{{ asset('storage/logo/logo.png') }}" alt="ChieuUzu Logo" style="height: 60px; width: 70px;">
                 </div>
             </li>
             <li class="{{ request()->routeIs('admin.dashboard.*') ? 'active' : '' }}"><a href="{{ route('admin.dashboard.index') }}"><i class="fa fa-th-large"></i><span class="nav-label">Bảng điều khiển</span></a></li>

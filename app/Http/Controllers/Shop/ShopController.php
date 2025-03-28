@@ -12,7 +12,7 @@ class ShopController extends Controller
 {
     public function index()
     {
-        $files = File::files(storage_path('app/public/banner')); // Dùng File::files() thay vì Storage::files()
+        $files = File::files(storage_path('app/public/banner'));
 
         $banners = collect($files)->map(function ($file) {
             return asset('storage/banner/' . $file->getFilename()); // Đường dẫn chính xác

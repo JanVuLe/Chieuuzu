@@ -83,6 +83,10 @@
                 <li>
                     <a href="{{ route('shop.contact') }}">Liên hệ</a>
                 </li>
+                <!-- Tin tức -->
+                <li>
+                    <a href="{{ route('shop.contact') }}">Tin tức</a>
+                </li>
                 <!-- Tìm kiếm -->
                 <li>
                     <form class="navbar-form" action="{{ route('shop.search') }}" method="GET">

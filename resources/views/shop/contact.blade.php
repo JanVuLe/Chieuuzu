@@ -1,6 +1,12 @@
 @extends('shop.layouts.master')
 @section('title', 'Liên hệ')
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+@endpush
 @section('content')
+<div class="product-detail-header" style="background-image: url('{{ asset('storage/banner/slide_2.jpg') }}');">
+    <h1 class="product-title">LIÊN HỆ</h1>
+</div>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-12">

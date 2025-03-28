@@ -13,18 +13,17 @@
         <hr>
             <h2><strong>{{ $category->name }}</strong></h2>
         <hr>
-            <div class="row">
+            <div class="row-cus">
                 @if ($category->products->isNotEmpty())
-                    @foreach ($category->products->take(4) as $product)
-                        <div class="col-md-3">
+                    @foreach ($category->products->take(5) as $product)
+                        <div class="col-md-5">
                             <div class="ibox">
                                 <div class="ibox-content product-box">
                                         @if($product->images->isNotEmpty())
                                             <div>
                                                 <img src="{{ asset('storage/' . $product->images->first()->image_url) }}" 
                                                     class="image-imitation"
-                                                    alt="{{ $product->name }}"
-                                                    style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: cover; padding: 0%;">
+                                                    alt="{{ $product->name }}">
                                             </div>
                                         @else
                                             <p>Chưa có hình ảnh</p>
@@ -52,7 +51,7 @@
                                                 {{ number_format($originalPrice, 0, ',', '.') }} đ
                                             </span>
                                         @endif
-                                        <a href="{{ route('shop.product', $product->id) }}" class="product-name">
+                                        <a href="{{ route('shop.product', $product->slug) }}" class="product-name">
                                             {{ $product->name }}
                                         </a>
                                         <div class="small m-t-xs">
@@ -75,17 +74,16 @@
             @foreach ($category->children as $childCategory)
                 @if ($childCategory->products->isNotEmpty())
                     <h3 class="subcategory-title">{{ $childCategory->name }}</h3>
-                    <div class="row">
-                        @foreach ($childCategory->products->take(4) as $product)
-                            <div class="col-md-3">
+                    <div class="row-cus">
+                        @foreach ($childCategory->products->take(5) as $product)
+                            <div class="col-md-5">
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         @if($product->images->isNotEmpty())
                                             <div>
                                                 <img src="{{ asset('storage/' . $product->images->first()->image_url) }}" 
                                                     class="image-imitation"
-                                                    alt="{{ $product->name }}"
-                                                    style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: cover; padding: 0%;">
+                                                    alt="{{ $product->name }}">
                                             </div>
                                         @else
                                             <p>Chưa có hình ảnh</p>
@@ -135,5 +133,20 @@
         @endif
     @endforeach
 </div>
-
+@push('styles')
+<style>
+    .row-cus{
+        display: flex;
+    }
+    .product-box{
+        max-width: 170px;
+    }
+    .image-imitation{
+        height: 168px;
+        width: auto;
+        object-fit: cover; 
+        padding: 0%;
+    }
+</style>
+@endpush
 @endsection

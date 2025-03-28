@@ -52,3 +52,31 @@
     font-size: 14px;
     padding: 5px 10px;
 }
+
+.product-detail-header {
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+}
+
+.product-detail-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 214, 103, 0.6); /* Lớp phủ vàng nhẹ */
+}
+
+.product-title {
+    position: relative;
+    background: #fff;
+    padding: 10px 20px;
+    border: 2px solid #8B0000;
+    color: #8B0000;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+}

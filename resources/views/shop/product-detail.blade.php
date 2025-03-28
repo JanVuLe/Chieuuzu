@@ -3,35 +3,7 @@
 @push('styles')
 <link href="{{ asset('assets/css/plugins/slick/slick.css') }}" rel="stylesheet">
 <link href="{{ asset('assets/css/plugins/slick/slick-theme.css') }}" rel="stylesheet">
-<style>
-.product-detail-header {
-    height: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    background-size: cover;
-    background-position: center;
-}
-
-.product-detail-header::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(255, 214, 103, 0.6); /* Lớp phủ vàng nhẹ */
-}
-
-.product-title {
-    position: relative;
-    background: #fff;
-    padding: 10px 20px;
-    border: 2px solid #8B0000;
-    color: #8B0000;
-    font-size: 24px;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-</style>
+<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 @endpush
 @section('content')
     <div class="product-detail-header" style="background-image: url('{{ asset('storage/banner/slide_2.jpg') }}');">
@@ -98,8 +70,9 @@
                                     <button class="btn btn-primary btn-sm add-to-cart" data-slug="{{ $product->slug }}">
                                         <i class="fa fa-cart-plus"></i> Thêm vào giỏ hàng
                                     </button>
-                                    <button class="btn btn-white btn-sm"><i class="fa fa-star"></i> Thêm vào danh sách theo dõi</button>
-                                    <button class="btn btn-white btn-sm"><i class="fa fa-envelope"></i> Liên hệ với CSKH</button>
+                                    <button class="btn btn-white btn-sm contact-support" data-product-id="{{ $product->id }}">
+                                        <i class="fa fa-envelope"></i> Liên hệ với CSKH
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -168,6 +141,40 @@
                 </div>
             </div>
             @endforeach
+            @if ($relatedProducts->isEmpty())
+                <div class="col-lg-12">
+                    <p>Không có sản phẩm tương tự</p>
+                </div>
+                
+            @endif
+        </div>
+    </div>
+
+    <!-- Modal Liên hệ CSKH -->
+    <div class="modal fade" id="contactSupportModal" tabindex="-1" role="dialog" aria-labelledby="contactSupportModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="contactSupportModalLabel">Liên hệ với CSKH</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="contactSupportForm">
+                        @csrf
+                        <input type="hidden" name="product_id" id="product_id">
+                        <div class="form-group">
+                            <label for="message">Nội dung yêu cầu hỗ trợ:</label>
+                            <textarea class="form-control" id="message" name="message" rows="4" placeholder="Nhập nội dung yêu cầu hỗ trợ..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="sendSupportRequest">Gửi yêu cầu</button>
+                </div>
+            </div>
         </div>
     </div>
 @push('scripts')
@@ -179,6 +186,24 @@
         });
     });
 
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
     $('.add-to-cart').on('click', function() {
         var slug = $(this).data('slug');
         $.ajax({
@@ -189,12 +214,40 @@
             },
             success: function(response) {
                 if (response.success) {
+                    // Hiển thị thông báo thành công
+                    toastr.success(response.message, 'Thành công');
+                    // Cập nhật số lượng giỏ hàng
                     $('.badge.bg-danger').text(response.cart_count);
-                    alert(response.message);
                 }
             },
             error: function() {
-                alert('Đã có lỗi xảy ra, vui lòng thử lại!');
+                // Hiển thị thông báo lỗi
+                toastr.error('Đã có lỗi xảy ra, vui lòng thử lại!', 'Lỗi');
+            }
+        });
+    });
+
+    $('.contact-support').on('click', function() {
+        const productId = $(this).data('product-id');
+        $('#product_id').val(productId); // Gán product_id vào input ẩn
+        $('#contactSupportModal').modal('show'); // Hiển thị modal
+    });
+
+    $('#sendSupportRequest').on('click', function() {
+        const formData = $('#contactSupportForm').serialize(); // Lấy dữ liệu từ form
+
+        $.ajax({
+            url: '{{ route("shop.contact.support") }}',
+            method: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    toastr.success(response.message, 'Thành công');
+                    $('#contactSupportModal').modal('hide'); // Ẩn modal sau khi gửi thành công
+                }
+            },
+            error: function() {
+                toastr.error('Đã có lỗi xảy ra, vui lòng thử lại!', 'Lỗi');
             }
         });
     });

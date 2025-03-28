@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Product extends Model
 {
+    use HasFactory;
     protected $fillable = ['name', 'slug', 'description', 'price', 'category_id', 'discount_id'];
 
     public function images()

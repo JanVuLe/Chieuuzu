@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\Admin\RevenueController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Auth\ShopLoginController;
 use App\Http\Controllers\Auth\ShopRegisterController;
@@ -18,7 +19,7 @@ use App\Http\Controllers\Shop\ProductController as ShopProductController;
 use App\Http\Controllers\Shop\ShopController;
 use App\Http\Controllers\Shop\LocationController;
 use App\Http\Controllers\Shop\NotificationController;
-use App\Http\Controllers\Shop\ProfileController;
+use App\Http\Controllers\Shop\ProfileController as ShopProfileController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
@@ -103,9 +104,8 @@ Route::prefix('admin')->group(function () {
         //Revenue
         Route::get('/revenue', [RevenueController::class, 'index'])->name('admin.revenue.index');
         //Profile
-        Route::get('/profile', function () {
-            return view('admin.profile');
-        })->name('admin.profile');
+        Route::post('/profile/update', [ProfileController::class, 'update'])->name('admin.profile.update');
+        Route::get('/profile', [ProfileController::class, 'index'])->name('admin.profile.index');
     });
 });
 
@@ -129,6 +129,7 @@ Route::get('/product/{slug}', [ShopProductController::class, 'show'])->name('sho
 // Contact
 Route::get('/contact', [ContactController::class, 'index'])->name('shop.contact');
 Route::post('/contact', [ContactController::class, 'submit'])->name('shop.contact.submit');
+Route::post('/contact-support', [ContactController::class, 'contactSupport'])->name('shop.contact.support');
 
 // API (Location)
 Route::get('/api/provinces', [LocationController::class, 'getProvinces'])->name('api.provinces');
@@ -144,8 +145,8 @@ Route::post('/cart/remove', [CartController::class, 'remove'])->name('shop.cart.
 // Routes yêu cầu đăng nhập
 Route::middleware(['auth', 'role:user'])->group(function () {
     // Profile
-    Route::get('/profile', [ProfileController::class, 'index'])->name('shop.profile');
-    Route::post('/profile/update', [ProfileController::class, 'update'])->name('shop.profile.update');
+    Route::get('/profile', [ShopProfileController::class, 'index'])->name('shop.profile');
+    Route::post('/profile/update', [ShopProfileController::class, 'update'])->name('shop.profile.update');
     Route::get('/notifications', [NotificationController::class, 'index'])->name('shop.notifications');
     // Cart
     Route::get('/payment', [CartController::class, 'payment'])->name('shop.payment');

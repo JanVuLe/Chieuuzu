@@ -2,8 +2,12 @@
 @section('title', 'Thanh toán')
 @push('styles')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 @endpush
 @section('content')
+<div class="product-detail-header" style="background-image: url('{{ asset('storage/banner/slide_2.jpg') }}');">
+    <h1 class="product-title">THANH TOÁN HÓA ĐƠN</h1>
+</div>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-12">
@@ -19,7 +23,7 @@
 
                     <div class="tab-content">
                         <!-- Tab 1: Thông tin -->
-                        <div id="tab-info" class="tab-pane fade in active">
+                        <div id="tab-info" class="tab-pane fade active in">
                             <div class="row m-t-md">
                                 <div class="col-md-6">
                                     <h3>Thông tin đơn hàng</h3>
@@ -86,7 +90,9 @@
                                 </div>
                             </div>
                             <div class="text-right m-t-md">
-                                <a href="#tab-payment" class="btn btn-primary" data-toggle="tab">Tiếp tục <i class="fa fa-arrow-right"></i></a>
+                                <a href="#tab-payment" class="btn btn-primary next-tab" data-target="#tab-payment">
+                                    Tiếp tục <i class="fa fa-arrow-right"></i>
+                                </a>
                             </div>
                         </div>
 
@@ -113,7 +119,9 @@
                                             <p class="text-muted small m-t-xs">Vui lòng chuyển khoản đến: Ngân hàng ABC - STK: 123456789 - Chủ TK: Tân Phú Hưng</p>
                                         </div>
                                         <div class="text-right m-t-md">
-                                            <a href="#tab-info" class="btn btn-white" data-toggle="tab"><i class="fa fa-arrow-left"></i> Quay lại</a>
+                                            <a href="#tab-info" class="btn btn-white prev-tab" data-target="#tab-info">
+                                                <i class="fa fa-arrow-left"></i> Quay lại
+                                            </a>
                                             <button type="submit" class="btn btn-primary">Xác nhận thanh toán <i class="fa fa-check"></i></button>
                                         </div>
                                     </form>
@@ -201,6 +209,30 @@
             $('#district_input').val($('#district').val());
             $('#ward_input').val($('#ward').val());
             $('#street_input').val($('#street').val());
+        });
+
+        // Khi nhấn nút "Tiếp tục", chuyển sang tab 2
+        $('.next-tab').on('click', function(e) {
+            e.preventDefault();
+            const target = $(this).data('target');
+
+            $('.nav-tabs li').removeClass('active');
+            $('.nav-tabs li:nth-child(2)').addClass('active');
+
+            $('.tab-pane').removeClass('active in'); 
+            $(target).addClass('active in');
+        });
+
+        // Khi nhấn nút "Quay lại", chuyển về tab 1
+        $('.prev-tab').on('click', function(e) {
+            e.preventDefault();
+            const target = $(this).data('target');
+
+            $('.nav-tabs li').removeClass('active'); 
+            $('.nav-tabs li:nth-child(1)').addClass('active');
+
+            $('.tab-pane').removeClass('active in');
+            $(target).addClass('active in');
         });
     });
 </script>
