@@ -9,7 +9,7 @@
                 @if ($banners->isNotEmpty())
                     @foreach ($banners as $banner)
                         <div>
-                            <img src="{{ $banner }}" style="width: 100%; height: auto; object-fit: cover;"
+                            <img src="{{ $banner }}" style="width: 100%; height: 100%; max-height: 400px; object-fit: cover;"
                                 style="max-width: 100%; width: auto; height: auto; object-fit: cover; padding: 0%;">
                         </div>
                     @endforeach
