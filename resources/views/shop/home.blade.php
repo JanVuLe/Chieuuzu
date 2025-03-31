@@ -31,6 +31,7 @@
 </style>
 @endpush
 @section('content')
+@include('shop.layouts.carousel')
 <div id="page-wrapper">
     @foreach ($categories as $category)
     <div class="row">
