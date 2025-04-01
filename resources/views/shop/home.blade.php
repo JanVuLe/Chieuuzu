@@ -1,35 +1,5 @@
 @extends('shop.layouts.master')
-@section('title', 'Trang chủ')
-@push('styles')
-<style>
-.new-title{
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 10px 20px 10px 25px;
-    position: relative;
-    display: inline-block;
-    font-family: 'Quicksand', sans-serif;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    background: #186f4c;
-    min-width: 250px;
-    margin-left: -10px;
-    margin-right: -10px;
-}
-.new-title h2::after{
-    content: "";
-    height: 1px;
-    width: 1px;
-    border-style: solid;
-    border-width: 5px;
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    border-color: #186f4c #186f4c transparent transparent;
-}
-</style>
-@endpush
+@section('title', 'Tân Phú Hưng - Chiếu Uzu & Cói')
 @section('content')
 @include('shop.layouts.carousel')
 <div id="page-wrapper">
@@ -39,21 +9,14 @@
             <div class="ibox">
                 <div class="ibox-title new-title">
                     <h2>
-                        @php
-                            $hasProducts = $category->products->isNotEmpty() || $category->children->pluck('products')->flatten()->isNotEmpty();
-                        @endphp
-                        @if ($hasProducts)
-                            <strong>{{ $category->name }}</strong>
-                        @else
-                            <strong>Chưa có sản phẩm</strong>
-                        @endif
+                        {{ $category->name }}
                     </h2>
                 </div>
                 <div class="ibox-content">
-                    <div class="row-cus">
+                    <div class="product-carousel">
                         @if ($category->products->isNotEmpty())
-                            @foreach ($category->products->take(5) as $product)
-                                <div class="col-md-5">
+                            @foreach ($category->products as $product)
+                                <div class="product-item">
                                     <div class="ibox">
                                         <div class="ibox-content product-box">
                                             @if($product->images->isNotEmpty())
@@ -88,6 +51,12 @@
                                                         {{ number_format($originalPrice, 0, ',', '.') }} đ
                                                     </span>
                                                 @endif
+                                                {{-- Kiểm tra tồn kho --}}
+                                                @if($product->total_stock > 0)
+                                                    <span class="text-success">Còn hàng</span>
+                                                @else
+                                                    <span class="text-danger">Hết hàng</span>
+                                                @endif
                                                 <a href="{{ route('shop.product', $product->slug) }}" class="product-name">
                                                     {{ $product->name }}
                                                 </a>
@@ -104,6 +73,10 @@
                                     </div>
                                 </div>
                             @endforeach
+                        @else
+                            <div class="emty-product">
+                                <p><strong>Không có sản phẩm nào trong danh mục này.</strong></p>
+                            </div>
                         @endif
                     </div>
                 </div>
@@ -113,19 +86,78 @@
     @endforeach
 </div>
 @push('styles')
+<link href="{{ asset('css/shop.css') }}" rel="stylesheet">
 <style>
     .row-cus{
         display: flex;
     }
+    .product-item{
+        width: 250px;
+    }
     .product-box{
-        max-width: 170px;
+        max-width: 250px;
+        margin-left: 10px;
+        margin-right: 10px;
     }
     .image-imitation{
-        height: 168px;
-        width: 168px;
+        height: 249px;
+        width: 249px;
         object-fit: cover; 
         padding: 0%;
     }
+    .product-price{
+        margin-left: -1px;
+    }
+    .emty-productelement.style{
+        text-align: center;
+        margin-top: 20px;
+    }
+    .text-success {
+        color: green;
+        font-weight: bold;
+    }
+
+    .text-danger {
+        color: red;
+        font-weight: bold;
+    }
 </style>
+@endpush
+@push('scripts')
+<script>
+    $(document).ready(function(){
+        $('.product-carousel').slick({
+            infinite: true,
+            slidesToShow: 4, // Số sản phẩm hiển thị cùng lúc
+            slidesToScroll: 1, // Số sản phẩm cuộn mỗi lần
+            arrows: true, // Hiển thị nút điều hướng
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 1,
+                        infinite: true,
+                        dots: true
+                    }
+                },
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }
+            ]
+        });
+    });
+</script>
 @endpush
 @endsection

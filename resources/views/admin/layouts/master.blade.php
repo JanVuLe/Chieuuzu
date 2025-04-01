@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'Admin Panel')</title>
-    
+    <link rel="icon" href="{{ asset('storage/logo/logo.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/font-awesome/css/font-awesome.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/animate.css') }}">

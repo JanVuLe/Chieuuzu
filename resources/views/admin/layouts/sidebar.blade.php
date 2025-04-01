@@ -41,6 +41,7 @@
             </li>
             <li class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"><a href="{{ route('admin.orders.index') }}"><i class="bi bi-receipt"></i><span class="nav-label">Hóa đơn</span></a></li>
             <li class="{{ request()->routeIs('admin.revenue.*') ? 'active' : '' }}"><a href="{{ route('admin.revenue.index') }}"><i class="bi bi-receipt"></i><span class="nav-label">Thống kê doanh thu</span></a></li>
+            <li class="{{ request()->routeIs('admin.news.*') ? 'active' : '' }}"><a href="{{ route('admin.news.index') }}"><i class="bi bi-newspaper"></i><span class="nav-label">Tin tức</span></a></li>
         </ul>
     </div>
 </nav>

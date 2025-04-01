@@ -1,44 +1,5 @@
 @extends('shop.layouts.master')
 @section('title', 'Thông báo đơn hàng')
-
-@push('styles')
-<style>
-    .notifications-container {
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 20px;
-        background: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .notification-item {
-        padding: 15px;
-        border-bottom: 1px solid #e7eaec;
-    }
-
-    .notification-item.unread {
-        background: #f8f8f8;
-        font-weight: bold;
-    }
-
-    .notification-item .title {
-        font-size: 16px;
-        color: #1ab394;
-    }
-
-    .notification-item .message {
-        margin-top: 5px;
-        color: #676a6c;
-    }
-
-    .notification-item .time {
-        font-size: 12px;
-        color: #999;
-    }
-</style>
-@endpush
-
 @section('content')
 <div class="notifications-container">
     <h1 class="text-center mb-4">Thông báo đơn hàng</h1>
@@ -85,4 +46,41 @@
         </div>
     @endif
 </div>
+@push('styles')
+<style>
+    .notifications-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .notification-item {
+        padding: 15px;
+        border-bottom: 1px solid #e7eaec;
+    }
+
+    .notification-item.unread {
+        background: #f8f8f8;
+        font-weight: bold;
+    }
+
+    .notification-item .title {
+        font-size: 16px;
+        color: #1ab394;
+    }
+
+    .notification-item .message {
+        margin-top: 5px;
+        color: #676a6c;
+    }
+
+    .notification-item .time {
+        font-size: 12px;
+        color: #999;
+    }
+</style>
+@endpush
 @endsection

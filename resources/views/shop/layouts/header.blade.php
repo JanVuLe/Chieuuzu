@@ -85,7 +85,7 @@
                 </li>
                 <!-- Tin tức -->
                 <li>
-                    <a href="{{ route('shop.contact') }}">Tin tức</a>
+                    <a href="{{ route('shop.news.index') }}">Tin tức</a>
                 </li>
                 <!-- Tìm kiếm -->
                 <li>
@@ -160,7 +160,7 @@
                             @if ($loop->last)
                                 <li class="active">{{ $breadcrumb['title'] }}</li>
                             @else
-                                <li><a href="{{ $breadcrumb['url'] }}"><i class="fa fa-home"></i> {{ $breadcrumb['title'] }}</a></li>
+                                <li><a href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['title'] }}</a></li>
                             @endif
                         @endforeach
                     @endif

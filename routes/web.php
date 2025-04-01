@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\Admin\RevenueController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Auth\AdminLoginController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Auth\ShopLoginController;
 use App\Http\Controllers\Auth\ShopRegisterController;
 use App\Http\Controllers\Shop\CartController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\Shop\ShopController;
 use App\Http\Controllers\Shop\LocationController;
 use App\Http\Controllers\Shop\NotificationController;
 use App\Http\Controllers\Shop\ProfileController as ShopProfileController;
+use App\Http\Controllers\Shop\NewsController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
@@ -103,6 +105,16 @@ Route::prefix('admin')->group(function () {
         Route::get('/order-success/{orderId}', [CartController::class, 'orderSuccess'])->name('shop.order.success');
         //Revenue
         Route::get('/revenue', [RevenueController::class, 'index'])->name('admin.revenue.index');
+        //News
+        Route::resource('/news', AdminNewsController::class)->parameters(['news' => 'slug'])->names([
+            'index'   => 'admin.news.index',
+            'create'  => 'admin.news.create',
+            'store'   => 'admin.news.store',
+            'show'    => 'admin.news.show',
+            'edit'    => 'admin.news.edit',
+            'update'  => 'admin.news.update',
+            'destroy' => 'admin.news.destroy'
+        ]);
         //Profile
         Route::post('/profile/update', [ProfileController::class, 'update'])->name('admin.profile.update');
         Route::get('/profile', [ProfileController::class, 'index'])->name('admin.profile.index');
@@ -142,6 +154,19 @@ Route::post('/cart/add/{slug}', [CartController::class, 'add'])->name('shop.cart
 Route::post('/cart/update', [CartController::class, 'update'])->name('shop.cart.update');
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('shop.cart.remove');
 
+// Google Login
+Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+
+// Password Reset
+Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('reset-password', [ForgotPasswordController::class, 'reset'])->name('password.update');
+
+// News
+Route::get('/news', [NewsController::class, 'index'])->name('shop.news.index');
+Route::get('/news/{slug}', [NewsController::class, 'show'])->name('shop.news.show');
 // Routes yêu cầu đăng nhập
 Route::middleware(['auth', 'role:user'])->group(function () {
     // Profile
@@ -157,16 +182,6 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     // Notification
     Route::get('/notifications', [NotificationController::class, 'index'])->name('shop.notifications');
 });
-
-// Google Login
-Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
-Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('auth.google.callback');
-
-// Password Reset
-Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
-Route::post('reset-password', [ForgotPasswordController::class, 'reset'])->name('password.update');
 
 // Test
 Route::get('/test', function () {
