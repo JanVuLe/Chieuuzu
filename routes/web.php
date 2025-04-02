@@ -33,7 +33,7 @@ Route::prefix('admin')->group(function () {
     Route::post('/login/store', [AdminLoginController::class, 'store'])->name('admin.login.store');
     Route::post('/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
-    Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::middleware(['auth.admin', 'role:admin'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('admin');
         //Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard.index');

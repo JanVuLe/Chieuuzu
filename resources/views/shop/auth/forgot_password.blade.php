@@ -39,6 +39,7 @@ footer {
                 <div class="row">
                     <div class="col-lg-12">
                         <form class="m-t" role="form" method="post" action="{{ route('password.email') }}">
+                            @csrf
                             <div class="form-group">
                                 <input type="email" id="email" name="email" class="form-control" placeholder="Email" required="">
                                 @error('email')

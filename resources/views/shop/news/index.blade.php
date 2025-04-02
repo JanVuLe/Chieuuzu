@@ -69,6 +69,7 @@
     </div>
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/shop.css') }}">
+<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 <style>
     .news-header {
         height: 150px;
@@ -110,48 +111,6 @@
     }
     .card-body {
         padding: 1.5rem;
-    }
-    .sidebar {
-        background-color: #f8f9fa;
-        padding: 20px;
-        padding-top: 0px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    .sidebar-title {
-        color: #fff;
-        font-size: 16px;
-        font-weight: bold;
-        padding: 10px 20px 1px 20px;
-        position: relative;
-        font-family: 'Quicksand', sans-serif;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-        background: #186f4c;
-        min-width: 223px;
-        margin-left: -30px;
-        margin-right: -20px;
-        border-radius: 5px 5px 0px 0px;
-    }
-    .sidebar-title h4::after{
-        content: "";
-        height: 1px;
-        width: 1px;
-        border-style: solid;
-        border-width: 5px;
-        position: absolute;
-        bottom: -10px;
-        left: 0;
-        border-color: #186f4c #186f4c transparent transparent;
-    }
-    .sidebar ul li a:hover {
-        color: #0056b3;
-    }
-    .category-box {
-        border-bottom: 1px solid;
-        padding: 10px 0;
-        font-size: 16px;
-        font-weight: 500;
     }
 </style>
 @endpush

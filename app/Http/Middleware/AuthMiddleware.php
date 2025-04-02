@@ -17,14 +17,22 @@ class AuthMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::check()) {
-            return redirect()->route('admin.login')->with('error', 'Bạn cần đăng nhập trước.');
+            return redirect()->to('/admin/login')->with('error', 'Bạn cần đăng nhập trước.');
         }
-        if (Auth::user()->role === 'admin' && Auth::user()->is_active) {
-            return $next($request);
+
+        $user = Auth::user();
+
+        if ($user->role !== 'admin') {
+            return redirect()->route('shop.home')->with('error', 'Bạn không có quyền truy cập khu vực quản trị.');
         }
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect()->route('admin.login')->with('error', 'Bạn không có quyền truy cập!');
+
+        if (!$user->is_active) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return redirect()->to('/admin/login')->with('error', 'Tài khoản của bạn đã bị vô hiệu hóa.');
+        }
+
+        return $next($request);
     }
 }
