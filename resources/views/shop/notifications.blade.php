@@ -4,6 +4,25 @@
 <div class="notifications-container">
     <h1 class="text-center mb-4">Thông báo đơn hàng</h1>
 
+    <!-- Thông báo nhắc nhở đánh giá -->
+    @if($reviewableProducts->isNotEmpty())
+        <div class="notification-item unread">
+            <div class="title">Nhắc nhở đánh giá sản phẩm</div>
+            <div class="message">
+                Bạn có sản phẩm đã nhận nhưng chưa đánh giá:
+                <ul>
+                    @foreach($reviewableProducts as $product)
+                        <li>
+                            <a href="{{ route('shop.product', $product->slug) }}">{{ $product->name }}</a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="time">{{ now()->diffForHumans() }}</div>
+        </div>
+    @endif
+
+    <!-- Danh sách đơn hàng -->
     @if ($orders->isEmpty())
         <p class="text-center">Bạn chưa có đơn hàng nào.</p>
     @else
@@ -42,7 +61,7 @@
         @endforeach
 
         <div class="mt-4">
-            {{ $orders->links() }} <!-- Phân trang -->
+            {{ $orders->links() }}
         </div>
     @endif
 </div>

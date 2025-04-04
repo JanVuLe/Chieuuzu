@@ -1,9 +1,9 @@
 @extends('admin.layouts.master')
 @section('title', 'Sửa tin tức')
 @section('content')
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
     <div class="container">
-        <h1>Sửa bài viết</h1>
-        <form action="{{ route('admin.news.update', $article->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.news.update', $article->slug) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="form-group">
@@ -29,4 +29,5 @@
             <a href="{{ route('admin.news.index') }}" class="btn btn-secondary">Hủy</a>
         </form>
     </div>
+</div>
 @endsection

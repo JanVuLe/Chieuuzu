@@ -3,6 +3,7 @@
 
 @push('styles')
 <link href="{{ asset('assets/css/plugins/footable/footable.core.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('assets/sweetalert2/sweetalert2.min.css') }}">
 @endpush
 
 @section('content')
@@ -99,7 +100,7 @@
 
 @push('scripts')
 <script src="{{ asset('assets/js/plugins/footable/footable.all.min.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ asset('assets/sweetalert2/sweetalert2.min.js') }}"></script>
 @if(session('success'))
     <script>
         Swal.fire({

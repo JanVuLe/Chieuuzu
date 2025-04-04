@@ -28,7 +28,8 @@ class Breadcrumb extends Component
             'admin.warehouses' => 'Kho hàng',
             'admin.discounts' => 'Khuyến mãi',
             'admin.orders' => 'Hóa đơn',
-            'admin.revenue' => 'Thống kê'
+            'admin.revenue' => 'Thống kê',
+            'admin.news' => 'Tin tức',
         ];
 
         foreach ($routes as $prefix => $label) {

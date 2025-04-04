@@ -23,4 +23,34 @@
     bottom: -10px;
     left: 0;
     border-color: #186f4c #186f4c transparent transparent;
-}       
+}
+
+.item-warranty-info{
+    display: flex;
+    font-size: inherit;
+    margin-bottom: 10px;
+}
+.item-warranty-info .icon img{
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+.item-warranty-info .description{
+    display: flex;
+    margin-left: 10px;
+    margin-top: 2px;
+}
+.item-warranty-info .description p{
+    font-size: 16px;
+}
+
+.product-main-price-discounted {
+    color: #fd2424;
+    font-weight: bold;
+    font-weight: 900;
+}
+.product-main-price {
+    color: #000;
+    font-weight: bold;
+    font-weight: 900;
+}

@@ -40,7 +40,6 @@ class NewsController extends Controller
         }
         $data['slug'] = $slug;
         $data['user_id'] = auth()->id();
-
         $article = News::create($data);
 
         if ($request->hasFile('image')) {
@@ -78,11 +77,9 @@ class NewsController extends Controller
         $data['user_id'] = auth()->id();
 
         if ($request->hasFile('image')) {
-            // Xóa ảnh cũ nếu có
             if ($article->image) {
                 Storage::disk('public')->delete($article->image);
             }
-            // Lưu ảnh mới vào thư mục news/{slug}
             $data['image'] = $request->file('image')->store("news/{$article->slug}", 'public');
         }
 

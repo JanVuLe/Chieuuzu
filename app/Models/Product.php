@@ -32,6 +32,11 @@ class Product extends Model
             ->withTimestamps();
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+    
     public function getTotalStockAttribute()
     {
         return $this->warehouses->sum('pivot.quantity');
@@ -48,6 +53,11 @@ class Product extends Model
         static::updating(function ($product) {
             $product->slug = Str::slug($product->name);
         });
+    }
+
+    public function averageRating()
+    {
+        return $this->reviews()->avg('rating');
     }
 
     public function getRouteKeyName()

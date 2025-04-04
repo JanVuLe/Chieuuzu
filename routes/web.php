@@ -1,5 +1,6 @@
 <?php
-
+//ADMIN
+use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DiscountController;
@@ -10,10 +11,12 @@ use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\Admin\RevenueController;
 use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+//SHOP
 use App\Http\Controllers\Auth\ShopLoginController;
 use App\Http\Controllers\Auth\ShopRegisterController;
+use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Shop\CartController;
 use App\Http\Controllers\Shop\ContactController;
 use App\Http\Controllers\Shop\ProductController as ShopProductController;
@@ -22,8 +25,7 @@ use App\Http\Controllers\Shop\LocationController;
 use App\Http\Controllers\Shop\NotificationController;
 use App\Http\Controllers\Shop\ProfileController as ShopProfileController;
 use App\Http\Controllers\Shop\NewsController;
-use App\Http\Controllers\Auth\GoogleController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Shop\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -167,6 +169,10 @@ Route::post('reset-password', [ForgotPasswordController::class, 'reset'])->name(
 // News
 Route::get('/news', [NewsController::class, 'index'])->name('shop.news.index');
 Route::get('/news/{slug}', [NewsController::class, 'show'])->name('shop.news.show');
+
+// Review
+Route::get('/product/{productId}/reviews', [ReviewController::class, 'show'])->name('shop.reviews.show');
+
 // Routes yêu cầu đăng nhập
 Route::middleware(['auth', 'role:user'])->group(function () {
     // Profile
@@ -181,6 +187,8 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::post('/order/cancel/{orderId}', [CartController::class, 'cancelOrder'])->name('shop.order.cancel');
     // Notification
     Route::get('/notifications', [NotificationController::class, 'index'])->name('shop.notifications');
+    // Review
+    Route::post('/review', [ReviewController::class, 'store'])->name('shop.review.store');
 });
 
 // Test
