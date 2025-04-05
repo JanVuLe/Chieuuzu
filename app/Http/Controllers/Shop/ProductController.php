@@ -52,7 +52,7 @@ class ProductController extends Controller
             $ratingDistribution[$i] = $product->reviews()->where('rating', $i)->count();
         }
 
-        return view('shop.product-detail', compact(
+        return view('shop.product_detail', compact(
             'product', 
             'categories', 
             'relatedProducts', 

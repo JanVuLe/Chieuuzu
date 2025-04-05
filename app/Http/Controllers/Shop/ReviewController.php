@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Shop;
 use App\Http\Controllers\Controller;
 use App\Models\Review;
 use App\Models\Order;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use illuminate\Support\Facades\Auth;
 
@@ -45,7 +46,13 @@ class ReviewController extends Controller
             'comment' => $request->comment,
         ]);
 
-        return redirect()->back()->with('success', 'Đánh giá của bạn đã được gửi!');
+        // Xóa thông báo nhắc nhở đánh giá liên quan đến sản phẩm này (nếu có)
+        Notification::where('user_id', $user->id)
+            ->where('title', 'Nhắc nhở đánh giá sản phẩm')
+            ->whereJsonContains('data->product_id', $productId)
+            ->delete();
+
+        return response()->json(['success' => 'Đánh giá của bạn đã được gửi!']);
     }
 
     public function show($productId)

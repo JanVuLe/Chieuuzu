@@ -185,8 +185,10 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     // Order
     Route::get('/order-success/{orderId}', [CartController::class, 'orderSuccess'])->name('shop.order.success');
     Route::post('/order/cancel/{orderId}', [CartController::class, 'cancelOrder'])->name('shop.order.cancel');
+    Route::get('/order/{orderId}', [CartController::class, 'show'])->name('shop.order.show');
     // Notification
     Route::get('/notifications', [NotificationController::class, 'index'])->name('shop.notifications');
+    Route::get('/shop/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('shop.notification.markAsRead');
     // Review
     Route::post('/review', [ReviewController::class, 'store'])->name('shop.review.store');
 });

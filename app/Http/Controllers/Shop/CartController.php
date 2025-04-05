@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Payment;
+use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Collection;
@@ -336,5 +337,30 @@ class CartController extends Controller
             'success' => false,
             'error' => 'Không thể hủy đơn hàng ở trạng thái hiện tại.'
         ]);
+    }
+
+    public function show($orderId)
+    {
+        $order = Order::where('id', $orderId)
+            ->where('user_id', Auth::id())
+            ->with(['orderDetails.product', 'payment'])
+            ->firstOrFail();
+
+        $categories = Category::whereNull('parent_id')->with(['children', 'products'])->get();
+
+        // Kiểm tra xem người dùng đã đánh giá từng sản phẩm trong đơn hàng chưa
+        $reviewableProducts = [];
+        foreach ($order->orderDetails as $detail) {
+            $hasReviewed = Review::where('user_id', Auth::id())
+                ->where('product_id', $detail->product_id)
+                ->exists();
+
+            $reviewableProducts[$detail->product_id] = [
+                'product' => $detail->product,
+                'hasReviewed' => $hasReviewed,
+            ];
+        }
+
+        return view('shop.order_detail', compact('order', 'categories', 'reviewableProducts'));
     }
 }

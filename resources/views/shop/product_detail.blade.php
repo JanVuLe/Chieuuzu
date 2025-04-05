@@ -130,46 +130,6 @@
                                     </button>
                                 </div>
                             </div>
-                            {{-- @auth
-                                @if($hasPurchased && !$hasReviewed)
-                                    <hr>
-                                    <h4>Đánh giá sản phẩm</h4>
-                                    <form action="{{ route('reviews.store') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-
-                                        <div class="form-group">
-                                            <label for="rating">Đánh giá (1-5 sao):</label>
-                                            <select name="rating" id="rating" class="form-control" required>
-                                                <option value="1">1 sao</option>
-                                                <option value="2">2 sao</option>
-                                                <option value="3">3 sao</option>
-                                                <option value="4">4 sao</option>
-                                                <option value="5">5 sao</option>
-                                            </select>
-                                            @error('rating')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="comment">Bình luận:</label>
-                                            <textarea name="comment" id="comment" class="form-control" rows="4" maxlength="1000"></textarea>
-                                            @error('comment')
-                                                // phpstan-ignore-next-line
-                                                <span class="text-danger">asdasds</span>
-                                            @enderror
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
-                                    </form>
-                                @elseif($hasReviewed)
-                                    <p>Bạn đã đánh giá sản phẩm này.</p>
-                                @else
-                                    <p>Bạn cần mua và nhận sản phẩm để đánh giá.</p>
-                                @endif  
-                            @else
-                                <p>Vui lòng đăng nhập để đánh giá sản phẩm.</p>
-                            @endauth --}}
                         </div>
                     </div>
                 </div>
@@ -335,66 +295,9 @@
                 </div>
             </div>
         </div>
-        {{-- @foreach ($relatedProducts as $related)
-        <div class="col-md-3">
-            <div class="ibox">
-                <div class="ibox-content product-box">
-                    @if($related->images->isNotEmpty())
-                        <div>
-                            <img src="{{ asset('storage/' . $related->images->first()->image_url) }}" 
-                                class="image-imitation"
-                                alt="{{ $related->name }}"
-                                style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: cover; padding: 0%;">
-                        </div>
-                    @else
-                        <p>Chưa có hình ảnh</p>
-                    @endif
-                    <div class="product-desc">
-                        @php
-                            $relatedDiscount = $related->discounts()
-                                ->where('status', 'active')
-                                ->where('start_date', '<=', now())
-                                ->where('end_date', '>=', now())
-                                ->orderBy('percentage', 'desc')
-                                ->first();
-                            $relatedOriginalPrice = $related->price;
-                            $relatedDiscountedPrice = $relatedDiscount ? $relatedOriginalPrice * (1 - $relatedDiscount->percentage / 100) : null;
-                        @endphp
-                        @if($relatedDiscount)
-                            <span class="product-price" style="text-decoration: line-through;">
-                                {{ number_format($relatedOriginalPrice, 0, ',', '.') }} đ
-                            </span>
-                            <span class="product-price-discounted">
-                                {{ number_format($relatedDiscountedPrice, 0, ',', '.') }} đ
-                            </span>
-                        @else
-                            <span class="product-price">
-                                {{ number_format($relatedOriginalPrice, 0, ',', '.') }} đ
-                            </span>
-                        @endif
-                        <a href="{{ route('shop.product', $related->slug) }}" class="product-name">
-                            {{ $related->name }}
-                        </a>
-                        <div class="small m-t-xs">
-                            {{ Str::limit($related->description, 50) }}
-                        </div>
-                        <div class="m-t text-right">
-                            <a href="{{ route('shop.product', $related->slug) }}" class="btn btn-xs btn-outline btn-primary">
-                                Xem chi tiết <i class="fa fa-long-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endforeach
-        @if ($relatedProducts->isEmpty())
-            <div class="col-lg-12">
-                <p>Không có sản phẩm tương tự</p>
-            </div>
-            
-        @endif --}}
     </div>
+
+    
 
     <!-- Modal Liên hệ CSKH -->
     <div class="modal fade" id="contactSupportModal" tabindex="-1" role="dialog" aria-labelledby="contactSupportModalLabel" aria-hidden="true">

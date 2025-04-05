@@ -122,7 +122,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="{{ route('shop.profile') }}">
-                                    <i class="fa fa-user-circle"></i> Truy cập thông tin tài khoản
+                                    <i class="fa fa-user-circle"></i> Thông tin tài khoản
                                 </a>
                             </li>
                             <li>
