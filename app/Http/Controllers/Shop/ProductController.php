@@ -43,6 +43,26 @@ class ProductController extends Controller
         $ratingCount = $product->reviews->count();
         $averageRating = $product->averageRating() ?? 0; // Nếu không có đánh giá, trả về 0
         
-        return view('shop.product-detail', compact('product', 'categories', 'relatedProducts', 'breadcrumbs', 'hasPurchased', 'hasReviewed', 'ratingCount', 'averageRating'));
+        // Lấy danh sách đánh giá có phân trang (10 đánh giá mỗi trang)
+        $reviews = $product->reviews()->with('user')->latest()->paginate(10);
+        
+        // Tính phân phối đánh giá cho từng mức sao
+        $ratingDistribution = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $ratingDistribution[$i] = $product->reviews()->where('rating', $i)->count();
+        }
+
+        return view('shop.product-detail', compact(
+            'product', 
+            'categories', 
+            'relatedProducts', 
+            'breadcrumbs', 
+            'hasPurchased', 
+            'hasReviewed', 
+            'ratingCount', 
+            'averageRating', 
+            'reviews', 
+            'ratingDistribution'
+        ));
     }
 }

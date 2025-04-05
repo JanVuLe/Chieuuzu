@@ -54,3 +54,22 @@
     font-weight: bold;
     font-weight: 900;
 }
+.rating-summary {
+    font-family: Arial, sans-serif;
+}
+
+.rating-item .progress {
+    background-color: #e0e0e0;
+}
+
+.rating-item .progress-bar {
+    transition: width 0.3s ease-in-out;
+}
+
+.review-item {
+    transition: all 0.2s ease;
+}
+
+.review-item:hover {
+    background-color: #f9f9f9;
+}
