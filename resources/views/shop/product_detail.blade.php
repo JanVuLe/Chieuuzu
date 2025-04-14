@@ -170,15 +170,98 @@
                                             @endfor
                                         </div>
                                     </div>
+                                    <hr>
+                                    {{-- Đánh giá --}}
+                                    <div class="review-product">
+                                        <p class="has-text-centered">Bạn đánh giá sao về sản phẩm này?</p>
+                                        <div class="has-text-centered">
+                                            @if (Auth::check())
+                                                @if (!$hasReviewed)
+                                                    <button class="text-white reviewProduct" data-product-id="{{ $product->id }}">
+                                                        Đánh giá ngay
+                                                    </button>
+                                                @elseif ($hasReviewed)
+                                                    <p style="color: #e74c3c;">Bạn đã đánh giá sản phẩm này rồi!</p>
+                                                @endif
+                                            @else
+                                                <p style="color: #e74c3c;">Vui lòng <a href="{{ route('shop.login') }}" style="color: #007bff;">đăng nhập</a> để đánh giá sản phẩm!</p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    {{-- Modal đánh giá sản phẩm --}}
+                                    <div class="modal fade" id="reviewProductModal" tabindex="-1" role="dialog" aria-labelledby="reviewProductModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="reviewModalLabel">Đánh giá sản phẩm</h5>
+                                                    <h3>{{ $product->name }}</h3>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form id="reviewForm">
+                                                        @csrf
+                                                        <input type="hidden" name="product_id" id="reviewProductId">
+                                                        <div class="mb-3">
+                                                            <label for="rating" class="form-label">Điểm đánh giá</label>
+                                                            <div class="star-rating">
+                                                                <div class="star-item">
+                                                                    <span class="star-wrapper">
+                                                                        <img class="star" data-value="1" src="{{ asset('assets/svg/star-svgrepo-com.svg') }}" alt="1 sao - Rất Tệ">
+                                                                    </span>
+                                                                    <span class="star-label">Rất Tệ</span>
+                                                                </div>
+                                                                <div class="star-item">
+                                                                    <span class="star-wrapper">
+                                                                        <img class="star" data-value="2" src="{{ asset('assets/svg/star-svgrepo-com.svg') }}" alt="2 sao - Tệ">
+                                                                    </span>
+                                                                    <span class="star-label">Tệ</span>
+                                                                </div>
+                                                                <div class="star-item">
+                                                                    <span class="star-wrapper">
+                                                                        <img class="star" data-value="3" src="{{ asset('assets/svg/star-svgrepo-com.svg') }}" alt="3 sao - Bình thường">
+                                                                    </span>
+                                                                    <span class="star-label">Bình thường</span>
+                                                                </div>
+                                                                <div class="star-item">
+                                                                    <span class="star-wrapper">
+                                                                        <img class="star" data-value="4" src="{{ asset('assets/svg/star-svgrepo-com.svg') }}" alt="4 sao - Tốt">
+                                                                    </span>
+                                                                    <span class="star-label">Tốt</span>
+                                                                </div>
+                                                                <div class="star-item">
+                                                                    <span class="star-wrapper">
+                                                                        <img class="star" data-value="5" src="{{ asset('assets/svg/star-svgrepo-com.svg') }}" alt="5 sao - Tuyệt vời">
+                                                                    </span>
+                                                                    <span class="star-label">Tuyệt vời</span>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Ô nhập ẩn để lưu giá trị đánh giá -->
+                                                            <input type="hidden" id="rating" name="rating" value="0" required>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="mb-3">
+                                                            <label for="comment" class="form-label">Nhận xét</label>
+                                                            <textarea class="form-control" id="comment" name="comment" rows="4" placeholder="Xin mời chia sẻ một số cảm nhận về sản phẩm."></textarea>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                    <button type="button" class="btn btn-primary" id="sendReviewRequest">Gửi đánh giá</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    {{-- Bình luận sản phẩm --}}
                                     <div class="reviews-list" style="margin-top: 30px;">
                                         @if($product->reviews->isNotEmpty())
                                             @foreach($product->reviews as $review)
                                                 <div class="review-item" style="border-bottom: 1px solid #e0e0e0; padding: 15px 0;">
-                                                    <!-- Tên người đánh giá -->
+                                                    {{-- Tên người đánh giá --}}
                                                     <div class="reviewer-name" style="font-weight: bold; margin-bottom: 5px;">
                                                         {{ $review->user->name ?? 'Ẩn danh' }}
                                                     </div>
-                                                    <!-- Số sao đánh giá -->
+                                                    {{-- Số sao đánh giá --}}
                                                     <div class="review-rating" style="margin-bottom: 5px;">
                                                         @for ($i = 1; $i <= 5; $i++)
                                                             @if ($i <= $review->rating)
@@ -188,13 +271,13 @@
                                                             @endif
                                                         @endfor
                                                     </div>
-                                                    <!-- Nội dung đánh giá -->
+                                                    {{--Nội dung đánh giá --}}
                                                     <div class="review-comment" style="color: #333;">
                                                         {{ $review->comment ?? 'Không có bình luận' }}
                                                     </div>
                                                 </div>
                                             @endforeach
-                                            <!-- Phân trang -->
+                                            {{-- Phân trang --}}
                                             <div class="pagination" style="margin-top: 20px;">
                                                 {{ $reviews->links() }}
                                             </div>
@@ -332,6 +415,54 @@
 <link href="{{ asset('assets/css/plugins/slick/slick-theme.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 <link href="{{ asset('css/shop.css') }}" rel="stylesheet">
+<style>
+.star-rating {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 500px;
+    margin: 10px auto;
+}
+.star-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+.star-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+}
+.star {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    filter: grayscale(100%);
+    transition: filter 0.2s;
+}
+
+.star:hover,
+.star.selected {
+    filter: none;
+}
+
+.star-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    margin: 5px auto;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+}
+
+.star-labels span {
+    flex: 1;
+}
+</style>
 @endpush
 
 @push('scripts')
@@ -428,6 +559,91 @@
             },
             error: function() {
                 toastr.error('Đã có lỗi xảy ra, vui lòng thử lại!', 'Lỗi');
+            }
+        });
+    });
+
+    $('.star').on('click', function() {
+        const ratingValue = $(this).data('value');
+        
+        // Cập nhật giá trị ô nhập ẩn
+        $('#rating').val(ratingValue);
+
+        // Xóa lớp 'selected' khỏi tất cả ngôi sao
+        $('.star').removeClass('selected');
+
+        // Thêm lớp 'selected' cho các ngôi sao có data-value nhỏ hơn hoặc bằng giá trị được chọn
+        $('.star').each(function() {
+            const starValue = $(this).data('value');
+            if (starValue <= ratingValue) {
+                $(this).addClass('selected');
+            }
+        });
+    });
+
+    // Tô sáng ngôi sao khi rê chuột
+    $('.star').on('mouseover', function() {
+        $(this).addClass('hover').addClass('hover');
+        $(this).nextAll('.star').removeClass('hover');
+    });
+
+    // Xóa hiệu ứng rê chuột khi chuột rời khỏi
+    $('.star-rating').on('mouseleave', function() {
+        $('.star').removeClass('hover');
+    });
+
+    $('.reviewProduct').on('click', function() {
+        const productId = $(this).data('product-id');
+        $('#reviewProductId').val(productId); // Gán product_id vào input ẩn
+        $('#reviewProductModal').modal('show'); // Hiển thị modal đánh giá
+    });
+
+    // Xử lý đánh giá
+    $('#sendReviewRequest').on('click', function() {
+        const formData = $('#reviewForm').serialize(); // Lấy dữ liệu từ form
+        const $button = $(this);
+        $button.prop('disabled', true).text('Đang gửi...');
+        // Kiểm tra xem người dùng đã chọn số sao chưa
+        if ($('#rating').val() == 0) {
+            toastr.error('Vui lòng chọn số sao để đánh giá!', 'Lỗi');
+            $button.prop('disabled', false).text('Gửi đánh giá');
+            return;
+        }
+
+        $.ajax({
+            url: '{{ route("shop.review.store") }}',
+            method: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    toastr.success(response.success, 'Thành công');
+                    $('#reviewProductModal').modal('hide');
+                    $('#reviewForm')[0].reset();
+                    $('.star').removeClass('selected');
+                    $('#rating').val(0);
+
+                    // Cập nhật giao diện trực tiếp từ phản hồi
+                    $('.reviews-list').html(response.reviews_html);
+                    $('.average-rating').html(response.average_rating_html);
+                    $('.rating-list').html(response.rating_list_html);
+                    $('.review-product').html(response.review_product_html);
+                    $('.item-warranty-info .description .font-bold').last().text(response.rating_count + ' đánh giá');
+                }
+            },
+            error: function(xhr) {
+                if (xhr.status === 401) {
+                    toastr.error('Vui lòng <a href="{{ route("shop.login") }}" style="color: #fff; text-decoration: underline;">đăng nhập</a> để gửi đánh giá!', 'Lỗi', {
+                        allowHtml: true
+                    });
+                } else {
+                    const errorMessage = xhr.responseJSON && xhr.responseJSON.error 
+                        ? xhr.responseJSON.error 
+                        : 'Đã có lỗi xảy ra, vui lòng thử lại!';
+                    toastr.error(errorMessage, 'Lỗi');
+                }
+            },
+            complete: function() {
+                $button.prop('disabled', false).text('Gửi đánh giá');
             }
         });
     });

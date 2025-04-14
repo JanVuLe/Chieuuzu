@@ -136,6 +136,10 @@ Route::post('/login/store', [ShopLoginController::class, 'store'])->name('shop.l
 Route::post('/logout', [ShopLoginController::class, 'logout'])->name('shop.logout');
 Route::get('/register', [ShopRegisterController::class, 'showRegisterForm'])->name('shop.register');
 Route::post('/register', [ShopRegisterController::class, 'register'])->name('shop.register.store');
+Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('reset-password', [ForgotPasswordController::class, 'reset'])->name('password.update');
 
 // Product
 Route::get('/product/{slug}', [ShopProductController::class, 'show'])->name('shop.product');
@@ -160,18 +164,10 @@ Route::post('/cart/remove', [CartController::class, 'remove'])->name('shop.cart.
 Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 
-// Password Reset
-Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
-Route::post('reset-password', [ForgotPasswordController::class, 'reset'])->name('password.update');
 
 // News
 Route::get('/news', [NewsController::class, 'index'])->name('shop.news.index');
 Route::get('/news/{slug}', [NewsController::class, 'show'])->name('shop.news.show');
-
-// Review
-Route::get('/product/{productId}/reviews', [ReviewController::class, 'show'])->name('shop.reviews.show');
 
 // Routes yêu cầu đăng nhập
 Route::middleware(['auth', 'role:user'])->group(function () {

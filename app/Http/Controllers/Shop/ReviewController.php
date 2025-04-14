@@ -22,23 +22,12 @@ class ReviewController extends Controller
         $user = Auth::user();
         $productId = $request->product_id;
 
-        // Kiểm tra xem người dùng đã mua sản phẩm và đơn hàng đã được xác nhận hoặc giao
-        $hasPurchased = Order::where('user_id', $user->id)
-            ->whereIn('status', ['confirmed', 'delivered'])
-            ->whereHas('orderDetails', function ($query) use ($productId) {
-                $query->where('product_id', $productId);
-            })
-            ->exists();
-
-        if (!$hasPurchased) {
-            return redirect()->back()->with('error', 'Bạn chỉ có thể đánh giá sản phẩm sau khi mua và đơn hàng được xác nhận hoặc giao!');
-        }
 
         // Kiểm tra xem người dùng đã đánh giá sản phẩm này chưa
         if (Review::where('user_id', $user->id)->where('product_id', $productId)->exists()) {
             return redirect()->back()->with('error', 'Bạn đã đánh giá sản phẩm này rồi!');
         }
-
+        
         Review::create([
             'user_id' => $user->id,
             'product_id' => $productId,
@@ -52,7 +41,42 @@ class ReviewController extends Controller
             ->whereJsonContains('data->product_id', $productId)
             ->delete();
 
-        return response()->json(['success' => 'Đánh giá của bạn đã được gửi!']);
+        // Lấy review mới nhất
+        $reviews = Review::where('product_id', $productId)
+        ->with('user')
+        ->latest()
+        ->get();
+
+        // Tính toán số lượng đánh giá, điểm trung bình và phân phối đánh giá
+        $ratingCount = $reviews->count();
+        $averageRating = $reviews->avg('rating') ?? 0;
+        $ratingDistribution = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $ratingDistribution[$i] = $reviews->where('rating', $i)->count();
+        }
+
+        $hasReviewed = true;
+
+        // Render HTML cho danh sách đánh giá
+        $reviewsHtml = view('shop.reviews.partials.reviews_list', compact('reviews'))->render();
+
+        // Render HTML cho phần điểm trung bình
+        $averageRatingHtml = view('shop.reviews.partials.average_rating', compact('averageRating'))->render();
+
+        // Render HTML cho phần phân phối sao
+        $ratingListHtml = view('shop.reviews.partials.rating_list', compact('ratingCount', 'ratingDistribution'))->render();
+
+        // Render HTML cho phần review-product
+        $reviewProductHtml = view('shop.reviews.partials.review_product', compact('hasReviewed'))->render();
+
+        return response()->json([
+            'success' => 'Đánh giá của bạn đã được gửi!',
+            'reviews_html' => $reviewsHtml,
+            'average_rating_html' => $averageRatingHtml,
+            'rating_list_html' => $ratingListHtml,
+            'review_product_html' => $reviewProductHtml,
+            'rating_count' => $ratingCount,
+        ]);
     }
 
     public function show($productId)

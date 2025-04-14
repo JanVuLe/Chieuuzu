@@ -36,6 +36,11 @@ footer {
                 <p>
                     Nhập email của bạn để nhận liên kết đặt lại mật khẩu.
                 </p>
+                @if (session('status'))
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
+                @endif
                 <div class="row">
                     <div class="col-lg-12">
                         <form class="m-t" role="form" method="post" action="{{ route('password.email') }}">
