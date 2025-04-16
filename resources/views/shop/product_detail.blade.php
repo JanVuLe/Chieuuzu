@@ -482,7 +482,7 @@
             dots: false,
             responsive: [
                 {
-                    breakpoint: 768, // Dưới 768px (mobile)
+                    breakpoint: 768, // Dưới 768px
                     settings: {
                         slidesToShow: 1 // Chỉ hiển thị 1 sản phẩm
                     }

@@ -32,13 +32,7 @@
                 </ul>
             </li>
             <li class="{{ request()->routeIs('admin.warehouses.*') ? 'active' : '' }}"><a href="{{ route('admin.warehouses.index') }}"><i class="fa fa-home"></i><span class="nav-label">Kho hàng</span></a></li>
-            <li class="{{ request()->routeIs('admin.discounts.*') ? 'active' : '' }}">
-                <a href="{{ route('admin.discounts.index') }}"><i class="fa fa-money"></i><span class="nav-label">Khuyến mãi</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse">
-                    <li class="{{ request()->routeIs('admin.discounts.*') ? 'active' : '' }}"><a href="{{ route('admin.discounts.index') }}">Khuyến mãi</a></li>
-                    <li class=""><a href="#">Mã khuyến mãi</a></li>
-                </ul>
-            </li>
+            <li class="{{ request()->routeIs('admin.discounts.*') ? 'active' : '' }}"><a href="{{ route('admin.discounts.index') }}"><i class="fa fa-money"></i><span class="nav-label">Khuyến mãi</span></a></li>
             <li class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"><a href="{{ route('admin.orders.index') }}"><i class="bi bi-receipt"></i><span class="nav-label">Hóa đơn</span></a></li>
             <li class="{{ request()->routeIs('admin.revenue.*') ? 'active' : '' }}"><a href="{{ route('admin.revenue.index') }}"><i class="bi bi-receipt"></i><span class="nav-label">Thống kê doanh thu</span></a></li>
             <li class="{{ request()->routeIs('admin.news.*') ? 'active' : '' }}"><a href="{{ route('admin.news.index') }}"><i class="bi bi-newspaper"></i><span class="nav-label">Tin tức</span></a></li>
