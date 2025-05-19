@@ -26,7 +26,7 @@
                 <div class="col-md-9">
                     @forelse ($news as $article)
                         <div class="col-md-12 mb-4">
-                            <div class="card h-100 shadow-sm border-0">
+                            <div class="card h-100 shadow-sm border-0" style="margin-bottom: 15px;">
                                 <div class="row g-0">
                                     <!-- Hình ảnh -->
                                     @if ($article->image)
@@ -85,7 +85,7 @@
         content: "";
         position: absolute;
         inset: 0;
-        background: rgba(255, 214, 103, 0.6); /* Lớp phủ vàng nhẹ */
+        background: rgba(255, 214, 103, 0.6);
     }
 
     .news-title {
@@ -107,10 +107,13 @@
     }
     .card-title:hover {
         text-decoration: underline;
-        color: #0056b3; /* Màu xanh đậm khi hover */
+        color: #0056b3;
     }
     .card-body {
         padding: 1.5rem;
+    }
+    .img-fluid {
+        max-width: 150px;
     }
 </style>
 @endpush

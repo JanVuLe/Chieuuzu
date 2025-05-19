@@ -10,7 +10,9 @@
         @foreach ($orders as $order)
             <div class="notification-item {{ in_array($order->status, ['pending', 'confirmed', 'processing']) && $order->updated_at > now()->subDays(7) ? 'unread' : '' }}">
                 <div class="title">
-                    Đơn hàng #{{ $order->id }} - {{ ucfirst($order->status) }}
+                    <a href="{{ route('shop.order.show', $order->id) }}" class="text-decoration-underline text-primary">
+                        Đơn hàng #{{ $order->id }} - {{ ucfirst($order->status) }}
+                    </a>
                 </div>
                 <div class="message">
                     @switch($order->status)

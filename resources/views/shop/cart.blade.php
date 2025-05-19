@@ -35,8 +35,6 @@
                                                     </a>
                                                 </h3>
                                                 <div class="m-t-sm">
-                                                    <a href="#" class="text-muted"><i class="fa fa-gift"></i> Thêm gói quà tặng</a>
-                                                    |
                                                     <a href="#" class="text-muted remove-item" data-id="{{ $id }}"><i class="fa fa-trash"></i> Xóa sản phẩm</a>
                                                 </div>
                                             </td>

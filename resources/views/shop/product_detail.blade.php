@@ -380,8 +380,6 @@
         </div>
     </div>
 
-    
-
     <!-- Modal Liên hệ CSKH -->
     <div class="modal fade" id="contactSupportModal" tabindex="-1" role="dialog" aria-labelledby="contactSupportModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

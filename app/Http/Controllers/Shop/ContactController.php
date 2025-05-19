@@ -45,12 +45,17 @@ class ContactController extends Controller
 
         $product = Product::find($request->product_id);
 
+        // Lấy thông tin user nếu đã đăng nhập
+        $user = auth()->user();
+
         // Gửi email đến CSKH
         Mail::send('shop.emails.contact-support', [
             'product' => $product,
             'messageContent' => $request->message,
+            'userName' => $user ? $user->name : $request->name,
+            'userEmail' => $user ? $user->email : $request->email,
         ], function ($mail) {
-            $mail->to('vu_dth216249@student.agu.edu.vn') // Email của CSKH
+            $mail->to('vu_dth216249@student.agu.edu.vn')
                 ->subject('Yêu cầu hỗ trợ từ khách hàng');
         });
 
