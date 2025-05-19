@@ -19,36 +19,34 @@
                 </ul>
             </div>
 
-            <!-- Về công ty -->
+            <!-- Danh mục -->
             <div class="col-md-4 mb-4 mb-md-0">
-                <h5 class="text-uppercase mb-3 animate__animated animate__fadeIn" style="animation-delay: 0.2s;">Về công ty</h5>
+                <h5 class="text-uppercase mb-3 animate__animated animate__fadeIn" style="animation-delay: 0.2s;">Danh mục</h5>
                 <ul class="list-unstyled">
                     <li class="mb-2 animate__animated animate__fadeIn" style="animation-delay: 0.4s;">
-                        <a href="#" class="text-white text-decoration-none hover-link">Giới thiệu công ty</a>
+                        <a href="{{ route('shop.news.index') }}" class="text-white text-decoration-none hover-link">Tin tức</a>
                     </li>
                     <li class="mb-2 animate__animated animate__fadeIn" style="animation-delay: 0.6s;">
-                        <a href="#" class="text-white text-decoration-none hover-link">Tuyển dụng</a>
-                    </li>
-                    <li class="mb-2 animate__animated animate__fadeIn" style="animation-delay: 0.8s;">
-                        <a href="#" class="text-white text-decoration-none hover-link">Gửi góp ý, khiếu nại</a>
+                        <a href="{{ route('shop.contact') }}" class="text-white text-decoration-none hover-link">Tuyển dụng</a>
                     </li>
                 </ul>
             </div>
 
             <!-- Theo dõi chúng tôi -->
             <div class="col-md-4 mb-4 mb-md-0">
-                <h5 class="text-uppercase mb-3 animate__animated animate__fadeIn" style="animation-delay: 0.2s;">Theo dõi chúng tôi</h5>
-                <div class="d-flex">
-                    <a href="#" class="btn btn-social btn-social-facebook me-2 animate__animated animate__zoomIn" style="animation-delay: 0.4s;">
-                        <i class="bi bi-facebook"></i>
-                    </a>
-                    <a href="#" class="btn btn-social btn-social-twitter me-2 animate__animated animate__zoomIn" style="animation-delay: 0.6s;">
-                        <i class="bi bi-twitter"></i>
-                    </a>
-                    <a href="#" class="btn btn-social btn-social-instagram animate__animated animate__zoomIn" style="animation-delay: 0.8s;">
-                        <i class="bi bi-instagram"></i>
-                    </a>
-                </div>
+                <h5 class="text-uppercase fw-bold mb-3">Theo dõi chúng tôi</h5>
+                <ul class="list-unstyled d-flex gap-3">
+                    <li>
+                        <a href="https://www.facebook.com/vu.v.le.12/" class="text-decoration-none text-dark d-flex align-items-center">
+                            <i class="bi bi-facebook fs-4 me-2"></i> <span>vu.v.le</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/@VuLe-rq6nm" class="text-decoration-none text-dark d-flex align-items-center">
+                            <i class="bi bi-youtube fs-4 me-2"></i> <span>VuLe-rq6nm</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
 
@@ -72,7 +70,6 @@
         text-align: center;
         width: 100%; /* Đảm bảo footer chiếm toàn bộ chiều ngang */
     }
-
     footer .container {
         max-width: 1140px; /* Giới hạn chiều rộng của container */
         margin: 0 auto; /* Căn giữa container */
@@ -141,7 +138,6 @@
         display: flex;
         flex-direction: column;
     }
-
     #wrapper {
         flex: 1;
         display: flex;

@@ -40,6 +40,8 @@ class ShopLoginController extends Controller
             } else {
                 return redirect()->route('shop.home');
             }
+        } else {
+            return redirect()->route('shop.home');
         }
 
         Session::flash('error', 'Email hoặc mật khẩu không đúng');

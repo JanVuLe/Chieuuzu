@@ -89,11 +89,11 @@
                 </li>
                 <!-- Tìm kiếm -->
                 <li>
-                    <form class="navbar-form" action="{{ route('shop.search') }}" method="GET">
+                   <form action="{{ route('shop.search') }}" method="GET" class="navbar-form navbar-left">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="q" placeholder="Tìm kiếm..." required>
+                            <input type="text" name="query" class="form-control" placeholder="Tìm kiếm sản phẩm..." value="{{ request('query') }}">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="submit">
+                                <button type="submit" class="btn btn-primary">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </span>

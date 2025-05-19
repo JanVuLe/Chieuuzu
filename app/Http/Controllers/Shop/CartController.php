@@ -95,12 +95,12 @@ class CartController extends Controller
         } else {
             $cart[$product->id] = [
                 'name' => $product->name,
-                'price' => $originalPrice, // Giá gốc
-                'discounted_price' => $discountedPrice, // Giá sau khuyến mãi
+                'price' => $originalPrice,
+                'discounted_price' => $discountedPrice,
                 'quantity' => 1,
                 'image' => $product->images->first()->image_url ?? null,
                 'slug' => $product->slug,
-                'discount_percentage' => $activeDiscount ? $activeDiscount->percentage : 0, // Phần trăm giảm giá
+                'discount_percentage' => $activeDiscount ? $activeDiscount->percentage : 0,
             ];
         }
 
@@ -310,7 +310,7 @@ class CartController extends Controller
             $order->status = 'cancelled';
             $order->save();
 
-            // Hoàn lại số lượng vào kho (thêm đều vào kho đầu tiên, hoặc tùy logic bạn muốn)
+            // Hoàn lại số lượng vào kho
             foreach ($order->orderDetails as $detail) {
                 $product = Product::with('warehouses')->findOrFail($detail->product_id);
                 $firstWarehouse = $product->warehouses->first();
@@ -318,7 +318,7 @@ class CartController extends Controller
                     $firstWarehouse->pivot->quantity += $detail->quantity;
                     $firstWarehouse->pivot->save();
                 } else {
-                    // Nếu chưa có kho, thêm vào kho mặc định (giả sử warehouse_id = 1)
+                    // Nếu chưa có kho, thêm vào kho mặc định
                     DB::table('warehouse_products')->insert([
                         'warehouse_id' => 1,
                         'product_id' => $detail->product_id,

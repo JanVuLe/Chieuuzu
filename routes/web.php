@@ -125,7 +125,6 @@ Route::prefix('admin')->group(function () {
 
 //SHOP
 Route::get('/', [ShopController::class, 'index'])->name('shop.home');
-Route::get('/category/{id}', [ShopController::class, 'category'])->name('shop.category');
 Route::get('/category/{slug}', [ShopController::class, 'category'])->name('shop.category');
 Route::get('/about', [ShopController::class, 'about'])->name('shop.about');
 Route::get('/search', [ShopController::class, 'search'])->name('shop.search');

@@ -43,4 +43,29 @@ class ShopController extends Controller
 
         return view('shop.category', compact('category', 'products', 'breadcrumbs'));
     }
+    
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $categories = Category::whereNull('parent_id')->with(['children', 'products'])->get();
+
+        $products = Product::where(function($q) use ($query) {
+            $q->where('name', 'LIKE', "%{$query}%")
+              ->orWhere('description', 'LIKE', "%{$query}%")
+              ->orWhere('price', 'LIKE', "%{$query}%");
+        })
+        ->with(['category', 'discounts'])
+        ->paginate(12);
+
+        if ($products->isEmpty()) {
+            return redirect()->back()->with('error', 'Không tìm thấy sản phẩm nào phù hợp với từ khóa "' . $query . '"');
+        }
+
+        $breadcrumbs = [
+            ['title' => 'Trang chủ', 'url' => route('shop.home')],
+            ['title' => 'Kết quả tìm kiếm: ' . $query, 'url' => '#']
+        ];
+
+        return view('shop.search', compact('products', 'categories', 'query', 'breadcrumbs'));
+    }
 }
